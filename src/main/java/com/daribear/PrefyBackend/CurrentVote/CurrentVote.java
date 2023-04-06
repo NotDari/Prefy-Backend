@@ -32,6 +32,7 @@ public class CurrentVote {
     }
 
     private Long userId;
+
     private Long postId;
     private String currentVote;
 

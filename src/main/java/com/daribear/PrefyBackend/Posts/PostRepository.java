@@ -36,8 +36,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.featured = true")
     ArrayList<Post> findFeaturedPosts(Pageable pageable);
 
-    @Query("SELECT p FROM Post p WHERE p.popular = true and ")
-    ArrayList<Post> findPopularPosts(Pageable pageable);
+    @Query("SELECT p FROM Post p WHERE p.popular = true AND p.popularDate < :lastPopDate AND NOT EXISTS(Select c FROM CurrentVote c WHERE c.userId = :userId AND c.postId = p.id)")
+    ArrayList<Post> findPopularPosts(Pageable pageable, @Param("lastPopDate") Double lastPopularDate, @Param("userId") Long userId);
 
     @Query("SELECT p FROM Post p")
     ArrayList<Post> findExploreRecentPosts(Pageable pageable);

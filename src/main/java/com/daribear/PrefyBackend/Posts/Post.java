@@ -2,6 +2,9 @@ package com.daribear.PrefyBackend.Posts;
 
 
 import com.daribear.PrefyBackend.CurrentVote.CurrentVote;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,6 +43,7 @@ public class Post {
     private Double creationDate;
     private Integer allVotes;
     private Boolean popular;
+    private Double popularDate;
     private Boolean featured;
 
 

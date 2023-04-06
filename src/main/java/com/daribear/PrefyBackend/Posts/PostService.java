@@ -6,6 +6,7 @@ import com.daribear.PrefyBackend.CurrentVote.CurrentVoteService;
 import com.daribear.PrefyBackend.IncomeClasses.DefaultIncomePageable;
 import com.daribear.PrefyBackend.IncomeClasses.IncomePostListByCategory;
 import com.daribear.PrefyBackend.IncomeClasses.IncomePostListById;
+import com.daribear.PrefyBackend.IncomeClasses.PopularIncomePageable;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserRepository;
 import org.hibernate.Criteria;
@@ -136,11 +137,9 @@ public class PostService {
         Pageable pageable = createPageable(defaultIncomePageable.getPageNumber(), defaultIncomePageable.getLimit());
         return postRepo.findFeaturedPosts(pageable);
     }
-    public ArrayList<Post> getPopularPosts(DefaultIncomePageable defaultIncomePageable){
-        Pageable pageable = createPageable(defaultIncomePageable.getPageNumber(), defaultIncomePageable.getLimit());
-        Sort sort = Sort.by(Sort.Direction.DESC, "creationDate");
-        pageable.getSortOr(sort);
-        return postRepo.findPopularPosts(pageable);
+    public ArrayList<Post> getPopularPosts(PopularIncomePageable popularIncomePageable){
+        Pageable pageable = PageRequest.of(0, popularIncomePageable.getLimit(), Sort.by("popularDate").descending());
+        return postRepo.findPopularPosts(pageable, popularIncomePageable.getLastPopularDate(), popularIncomePageable.getUserId());
     }
 
     private Pageable createPageable(Integer pageNumber, Integer limit){
@@ -156,7 +155,7 @@ public class PostService {
     @Transactional
     public void deletePost(Long postId){
         Post post = postRepo.findPostById(postId).get();
-        User user =userRepo.findUserByID(post.getUserId()).get();
+        User user = userRepo.findUserByID(post.getUserId()).get();
         user.setPostsNumber(user.getPostsNumber() - 1);
         postRepo.delete(post);
     }
