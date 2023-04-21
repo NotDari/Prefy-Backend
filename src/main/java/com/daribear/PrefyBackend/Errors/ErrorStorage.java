@@ -10,13 +10,15 @@ public class ErrorStorage {
         UserAccountLocked(HttpServletResponse.SC_UNAUTHORIZED,2,  "Account is locked"),
         UserAccountDisabled(HttpServletResponse.SC_UNAUTHORIZED,3,  "Account is disabled"),
         InternalError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,4,  "Internal Server Error"),
-        UnknownError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,5,  "Unkown Error"),
+        UnknownError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,5,  "Unknown Error"),
         UserLoggedOut(HttpServletResponse.SC_UNAUTHORIZED,6,  "User logged out"),
         NOAUTHATTEMPTED(HttpServletResponse.SC_UNAUTHORIZED,7,  "No Auth attempted"),
 
         REGEUSERTAKE(HttpServletResponse.SC_UNAUTHORIZED,8,  "Registration Username Taken"),
 
-        REGEMAILTAKE(HttpServletResponse.SC_UNAUTHORIZED,9,  "Registration Email Taken");
+        REGEMAILTAKE(HttpServletResponse.SC_UNAUTHORIZED,9,  "Registration Email Taken"),
+
+        CurrentUserDeleted(HttpServletResponse.SC_FORBIDDEN, 10, "Current user deleted");
         public final Integer responseCode;
         public final Integer errorCode;
         public final String message;

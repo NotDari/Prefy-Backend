@@ -6,6 +6,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.Date;
+
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode
@@ -15,4 +17,6 @@ public class RegistrationRequest {
     private final String email;
     private final String password;
     private final String username;
+
+    private final Date DOB;
 }

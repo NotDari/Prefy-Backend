@@ -4,6 +4,10 @@ import com.daribear.PrefyBackend.Activity.UserActivity.*;
 import com.daribear.PrefyBackend.Comments.Comment;
 import com.daribear.PrefyBackend.Comments.CommentRepository;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
+import com.daribear.PrefyBackend.IncomeClasses.IncomePostListById;
+import com.daribear.PrefyBackend.Posts.Post;
+import com.daribear.PrefyBackend.Posts.PostRepository;
+import com.daribear.PrefyBackend.Posts.PostService;
 import com.daribear.PrefyBackend.Users.User;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +28,7 @@ public class ActivityService {
     private UserActivityRepository userActivityRepo;
     private VotesActivityRepository votesActivityRepo;
     private CommentsActivityRepository commentsActivityRepo;
+    private PostRepository postRepo;
 
 
     public ArrayList<CommentsActivity> getCommentsActivity(Integer pageNumber, Long userId){
@@ -33,6 +38,10 @@ public class ActivityService {
         Optional<List<CommentsActivity>> commentListOpt = commentsActivityRepo.findCommentsActivityListById(userId, pageable);
         if (commentListOpt.isPresent()){
             ArrayList<CommentsActivity> commentList = new ArrayList<>(commentListOpt.get());
+            for (int i =0; i < commentList.size(); i++){
+                Post post = postRepo.getById(commentList.get(i).getPostId());
+                commentList.get(i).setPostImageURL(post.getImageURL());
+            }
             return commentList;
         } else {
             throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.InternalError);
@@ -94,10 +103,31 @@ public class ActivityService {
             VotesActivity votesActivity = new VotesActivity();
             votesActivity.setLastUserId(submitterID);
             votesActivity.setPostId(postId);
-            votesActivity.setPostCreationDate(Double.valueOf(System.currentTimeMillis()));
+            votesActivity.setLastVoteDate(Double.valueOf(System.currentTimeMillis()));
             votesActivity.setUserId(posterId);
-            votesActivityRepo.save(votesActivity);
+            if (!votesActivityRepo.existsVotesActivityByPostId(postId)) {
+                votesActivityRepo.save(votesActivity);
+            } else {
+                votesActivityRepo.updateVoteActivity(votesActivity.getPostId(), votesActivity.getLastUserId(), votesActivity.getLastVoteDate());
+            }
         }
         return false;
     }
+
+    public void madeComment(Comment comment){
+        Optional<UserActivity> userActivityOpt = userActivityRepo.findById(comment.getUser().getId());
+        if (userActivityOpt.isPresent()){
+            UserActivity userActivity = userActivityOpt.get();
+            userActivity.setNewVotesCount(userActivity.getNewCommentsCount() + 1);
+            userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
+            CommentsActivity commentsActivity = new CommentsActivity();
+            commentsActivity.setText(comment.getText());
+            commentsActivity.setIsReply(comment.getParentId() != null);
+            commentsActivity.setPostId(comment.getPostId());
+            commentsActivity.setCreationDate(Double.valueOf(System.currentTimeMillis()));
+            commentsActivity.setUserId(comment.getUser().getId());
+            commentsActivityRepo.save(commentsActivity);
+        }
+    }
+
 }

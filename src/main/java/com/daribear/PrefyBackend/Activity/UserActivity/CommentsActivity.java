@@ -28,6 +28,7 @@ public class CommentsActivity {
     private Long postId;
     private Boolean isReply;
     private String text;
+    @Transient
     private String postImageURL;
     private Double creationDate;
 }

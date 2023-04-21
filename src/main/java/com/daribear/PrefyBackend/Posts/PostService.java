@@ -3,10 +3,8 @@ package com.daribear.PrefyBackend.Posts;
 import com.daribear.PrefyBackend.Activity.ActivityService;
 import com.daribear.PrefyBackend.CurrentVote.CurrentVote;
 import com.daribear.PrefyBackend.CurrentVote.CurrentVoteService;
-import com.daribear.PrefyBackend.IncomeClasses.DefaultIncomePageable;
-import com.daribear.PrefyBackend.IncomeClasses.IncomePostListByCategory;
-import com.daribear.PrefyBackend.IncomeClasses.IncomePostListById;
-import com.daribear.PrefyBackend.IncomeClasses.PopularIncomePageable;
+import com.daribear.PrefyBackend.Errors.ErrorStorage;
+import com.daribear.PrefyBackend.IncomeClasses.*;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserRepository;
 import org.hibernate.Criteria;
@@ -69,19 +67,40 @@ public class PostService {
             } else if (vote.equalsIgnoreCase("Left")) {
                 post.setLeftVotes(post.getLeftVotes() + 1);
             }
-            post.setAllVotes(post.getAllVotes() + 1);
-            Optional<User> postUserOptional = userRepo.findUserByID(post.getUserId());
-            if (postUserOptional.isPresent()){
-                activityService.vote(id, post.getUserId(), post.getId());
-                User user = postUserOptional.get();
-                user.setVotesNumber(user.getVotesNumber() + 1);
-                userRepo.save(user);
+            if (!vote.equalsIgnoreCase("skip") && !vote.equalsIgnoreCase("none")){
+                post.setAllVotes(post.getAllVotes() + 1);
+                Optional<User> postUserOptional = userRepo.findUserByID(post.getUserId());
+                if (postUserOptional.isPresent()){
+                    activityService.vote(postVote.getUserId(), post.getUserId(), post.getId());
+                    User user = postUserOptional.get();
+                    user.setVotesNumber(user.getVotesNumber() + 1);
+                    userRepo.save(user);
+                }
+                Optional<User> submittedUserOptional = userRepo.findUserByID(post.getUserId());
+                if (submittedUserOptional.isPresent()){
+                    User user = submittedUserOptional.get();
+                    user.setPrefsNumber(user.getPrefsNumber() + 1);
+                    userRepo.save(user);
+                }else {
+                    throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.CurrentUserDeleted);
+                }
             }
-            if (!currentVoteService.getCurrentVote(userId, id).isPresent()) {
+
+
+
+            if (currentVoteService.getCurrentVote(userId, id).isPresent()){
+                String tempcurrentVote = currentVoteService.getCurrentVote(userId, id).get().getCurrentVote();
+                if (!(tempcurrentVote.equals("right") || tempcurrentVote.equals("left"))) {
+                    postRepo.save(post);
+                    CurrentVote currentVote = new CurrentVote(userId, id, vote);
+                    currentVoteService.updateCurrentVote(currentVote.getVoteId(), vote);
+                }
+            }else {
                 postRepo.save(post);
                 CurrentVote currentVote = new CurrentVote(userId, id, vote);
                 currentVoteService.saveCurrentVote(currentVote);
             }
+
 
         } else {
             throw new IllegalStateException("Post with id: " + id + " does not exist");
@@ -114,6 +133,11 @@ public class PostService {
             }
         }
         return postList;
+    }
+
+
+    public Post getPostById(Long postId){
+        return postRepo.getById(postId);
     }
 
     public ArrayList<Post> getPostListById(IncomePostListById incomePostListById){
@@ -149,6 +173,11 @@ public class PostService {
 
     public ArrayList<Post> getExploreRecentPosts(DefaultIncomePageable defaultIncomePageable){
         return postRepo.findExploreRecentPosts(createPageable(defaultIncomePageable.getPageNumber(), defaultIncomePageable.getLimit()));
+    }
+
+    public ArrayList<Post> newGetPopularPosts(NewPopularIncomePageable newPopularIncomePageable){
+        Pageable pageable = PageRequest.of(0, newPopularIncomePageable.getLimit(), Sort.by("popularDate").descending());
+        return postRepo.findNewPopularPosts(pageable,newPopularIncomePageable.getUserId(), newPopularIncomePageable.getIgnoreList());
     }
 
 

@@ -27,16 +27,34 @@ public class JWTService {
             optionalAuth = authService.getUserByEmail(jwt.getSubject());
         }
         if (optionalAuth.isPresent()){
-            JWTClass jwtClass = new JWTClass( jwt.getToken(), LocalDateTime.ofInstant(jwt.getIssuedAt().toInstant(), ZoneId.systemDefault()), LocalDateTime.ofInstant(jwt.getExpiresAt().toInstant(), ZoneId.systemDefault()), LocalDateTime.now(),optionalAuth.get());
-            if (jwtRepository.findByToken(jwtClass.getToken()).isEmpty()){
-                jwtRepository.save(jwtClass);
-            }
+            jwtRepository.logoutToken(jwt.getToken(), LocalDateTime.now());
         }
 
         return false;
     }
 
+
+    public void saveToken(JWTClass jwtClass){
+        jwtRepository.save(jwtClass);
+    }
     public boolean tokenExists(String token){
         return jwtRepository.findByToken(token).isPresent();
+    }
+
+    public boolean tokenValid(String token){
+        Optional<JWTClass> jwtClassOpt = jwtRepository.findByToken(token);
+        if (jwtClassOpt.isEmpty()){
+            return false;
+        }
+        JWTClass jwtClass = jwtClassOpt.get();
+        if (jwtClass.getBanDate() != null){
+            if (jwtClass.getBanDate().isBefore(LocalDateTime.now())){
+                return false;
+            }
+        }
+        if (jwtClass.getExpiryDate().isBefore(LocalDateTime.now())){
+            return false;
+        }
+        return true;
     }
 }

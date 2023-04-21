@@ -27,5 +27,5 @@ public class VotesActivity {
     private Long userId;
     private Long postId;
     private Long lastUserId;
-    private Double postCreationDate;
+    private Double lastVoteDate;
 }

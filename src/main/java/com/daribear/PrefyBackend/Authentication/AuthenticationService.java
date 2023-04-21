@@ -1,5 +1,6 @@
 package com.daribear.PrefyBackend.Authentication;
 
+import com.daribear.PrefyBackend.Authentication.Registration.RegistrationRequest;
 import com.daribear.PrefyBackend.Authentication.Registration.RegistrationToken.RegistrationConfirmationToken;
 import com.daribear.PrefyBackend.Authentication.Registration.RegistrationToken.RegistrationConfirmationTokenService;
 import com.daribear.PrefyBackend.Email.EMAILFORMATS;
@@ -7,6 +8,8 @@ import com.daribear.PrefyBackend.Email.EmailSender;
 import com.daribear.PrefyBackend.Errors.CustomError;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Security.PasswordConfig;
+import com.daribear.PrefyBackend.UserInfo.UserInfo;
+import com.daribear.PrefyBackend.UserInfo.UserInfoService;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
 import com.daribear.PrefyBackend.Utils.ComputerIp;
@@ -31,6 +34,7 @@ import java.util.UUID;
 public class AuthenticationService implements UserDetailsService {
     private final AuthenticationRepository authRepository;
     private final UserService userService;
+    private final UserInfoService userInfoService;
     private final EmailSender emailSender;
     private final RegistrationConfirmationTokenService registrationConfirmationTokenService;
     private PasswordConfig passwordConfig;
@@ -38,7 +42,6 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws CustomError {
-        System.out.println("Sdad HELLO" + username);
         Optional<Authentication> emailAuth = authRepository.findByEmail(username);
         Optional<User> Id = userService.findByUsername(username);
         if (emailAuth.isEmpty() && Id.isEmpty()){
@@ -73,7 +76,9 @@ public class AuthenticationService implements UserDetailsService {
         return authRepository.findById(id);
     }
 
-    public String signUpUser(Authentication authentication, String username, String fullName){
+    public String signUpUser(Authentication authentication, RegistrationRequest registrationRequest){
+        String username = registrationRequest.getUsername();
+        String fullName = registrationRequest.getFullname();
         boolean usernameTaken = userService.userNameExists(username);
         if (usernameTaken){
             throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.REGEUSERTAKE);
@@ -100,6 +105,8 @@ public class AuthenticationService implements UserDetailsService {
         emailSender.send(authentication.getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, "http:/" + systemipaddress + ":8090/prefy/v1/Registration/Confirm?token=" + token));
         User user = new User(authentication.getId(), username, "none", fullName, 0L, 0L, 0L, "", "", "", "", false);
         userService.addNewUser(user);
+        UserInfo userInfo = new UserInfo(authentication, ((Long)System.currentTimeMillis()).doubleValue(), ((Long)registrationRequest.getDOB().getTime()).doubleValue());
+        userInfoService.saveUserInfo(userInfo);
         return "it works";
     }
 

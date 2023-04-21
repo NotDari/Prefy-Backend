@@ -73,6 +73,7 @@ public class UserService {
 
     public User getUserById(Long id){
         Optional<User> optUser = userRepo.findUserByID(id);
+
         if (optUser.isEmpty()){
             return null;
         } else {

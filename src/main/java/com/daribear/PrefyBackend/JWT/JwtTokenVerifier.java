@@ -53,10 +53,15 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                     null,
                     authoritySet
             );
-            if (jwtService.tokenExists(jwt.getToken())){
+            if (!jwtService.tokenExists(jwt.getToken())){
                 denied = true;
                 createCustomError(response, ErrorType.UserLoggedOut);
             }
+            if (!jwtService.tokenValid(jwt.getToken())){
+                denied = true;
+                createCustomError(response, ErrorType.UserLoggedOut);
+            }
+
              if (AccountSecurityChecks(username, response, authoritySet, jwt)){
                  denied = true;
              }

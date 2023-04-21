@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
@@ -38,6 +39,7 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
     private JWTConfig jwtConfig;
     private UserService userService;
+    private JWTService jwtService;
 
 
     @Override
@@ -74,7 +76,6 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             ArrayList<String> authList = new ArrayList<>();
             for (int i =0; i < authResult.getAuthorities().size(); i++){
                 authList.add(it.next().toString());
-
             }
             Optional<User> userOpt = userService.findById(((com.daribear.PrefyBackend.Authentication.Authentication)authResult.getPrincipal()).getId());
             if (userOpt.isPresent()) {
@@ -92,6 +93,12 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                         .withExpiresAt(Date.valueOf(LocalDate.now().plusDays(jwtConfig.getTokenExpirationAfterDays())))
                         .sign(algorithm);
                 response.addHeader("Authorization", jwtConfig.getTokenPrefix() + token);
+                JWTClass jwtClass = new JWTClass();
+                jwtClass.setAuthentication((com.daribear.PrefyBackend.Authentication.Authentication)authResult.getPrincipal());
+                jwtClass.setToken(token);
+                jwtClass.setIssueDate(LocalDateTime.now());
+                jwtClass.setExpiryDate(LocalDateTime.now().plusDays(jwtConfig.getTokenExpirationAfterDays()));
+                jwtService.saveToken(jwtClass);
             } else {
                 CustomError customError = ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.InternalError);
                 ErrorSchema errorSchema = new ErrorSchema(customError.getMessage(), customError.getCustomCode());

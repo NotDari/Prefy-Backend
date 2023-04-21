@@ -1,6 +1,7 @@
 package com.daribear.PrefyBackend.Comments;
 
 
+import com.daribear.PrefyBackend.Activity.ActivityService;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostRepository;
@@ -23,15 +24,18 @@ public class CommentService {
     private UserRepository userRepo;
 
     private PostRepository postRepo;
+    private ActivityService activityService;
+
 
     public CommentService() {
     }
 
     @Autowired
-    public CommentService (CommentRepository commentRepo, UserRepository userRepo, PostRepository postRepo){
+    public CommentService (CommentRepository commentRepo, UserRepository userRepo, PostRepository postRepo, ActivityService activityService){
         this.commentRepo = commentRepo;
         this.userRepo = userRepo;
         this.postRepo = postRepo;
+        this.activityService = activityService;
     }
 
     @Transactional
@@ -42,6 +46,7 @@ public class CommentService {
                 Post post = postRepo.findPostById(comment.getPostId()).get();
                 post.setCommentsNumber(post.getCommentsNumber() + 1);
                 postRepo.save(post);
+                activityService.madeComment(comment);
                 commentRepo.save(comment);
             }
 
@@ -128,17 +133,20 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId){
-        Comment comment = commentRepo.getById(commentId);
-        if (comment.getParentId() != null){
-            Comment parentComment = commentRepo.getById(commentId);
-            parentComment.setReplyCount(parentComment.getReplyCount() - 1);
-            commentRepo.save(parentComment);
+        Optional<Comment> commentopt = commentRepo.findCommentById(commentId);
+        if (commentopt.isPresent()) {
+            Comment comment = commentopt.get();
+            if (comment.getParentId() != null) {
+                Comment parentComment = commentRepo.getById(commentId);
+                parentComment.setReplyCount(parentComment.getReplyCount() - 1);
+                commentRepo.save(parentComment);
+            }
+
+
+            Post post = postRepo.getById(comment.getPostId());
+            post.setCommentsNumber(postRepo.getById(comment.getPostId()).getCommentsNumber() - 1);
+            postRepo.save(post);
+            commentRepo.deleteById(commentId);
         }
-
-
-        Post post = postRepo.getById(comment.getPostId());
-        post.setCommentsNumber(postRepo.getById(comment.getPostId()).getCommentsNumber() - 1);
-        postRepo.save(post);
-        commentRepo.deleteById(commentId);
     }
 }

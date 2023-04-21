@@ -14,5 +14,6 @@ import java.util.Optional;
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
 
-
+    @Query("SELECT r FROM Report r WHERE r.active = TRUE")
+    Optional<List<Report>> findActiveReports(Pageable pageable);
 }

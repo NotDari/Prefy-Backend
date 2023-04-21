@@ -42,10 +42,9 @@ public class RegistrationService {
             throw new IllegalStateException("email not valid");
         }
         Authentication newUser = new Authentication(request.getEmail(), request.getPassword(), User.getGrantedAuthorities());
-        System.out.println("Sdad userAuthorities:" + newUser.getGrantedAuthorities());
         newUser.setLocked(false);
         newUser.setEnabled(false);
-        return authenticationService.signUpUser(newUser, request.getUsername(), request.getFullname());
+        return authenticationService.signUpUser(newUser, request);
     }
 
 

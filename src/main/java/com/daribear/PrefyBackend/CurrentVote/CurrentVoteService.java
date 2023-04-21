@@ -31,6 +31,10 @@ public class CurrentVoteService {
         currentVoteRepo.save(currentVote);
     }
 
+    public void updateCurrentVote(Long voteId, String vote){
+        currentVoteRepo.updateCurrentVoteVote(voteId, vote);
+    }
+
     public ArrayList<CurrentVote> getCurrentVoteList(IncomeVoteListRetreiver incomeVoteListRetreiver){
         ArrayList<CurrentVote> currentVoteList = new ArrayList<>();
         for (int i = 0; i < incomeVoteListRetreiver.getPostIdList().size(); i++){
