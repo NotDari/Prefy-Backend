@@ -126,7 +126,7 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
-		<finalName>Spring-Boot-Application</finalName>
+		<finalName>spring-boot-application</finalName>
 	</build>
 
 
