@@ -85,7 +85,6 @@ public class Spongebot {
 
                         spongebotParameters.setStopCounter(spongebotParameters.getStopCounter() - Math.toIntExact(((new Date()).getTime() / 1000) - (startTime / 1000) + spongebotParameters.getBotInterval()));
                         if (spongebotParameters.getStopCounter() <= 0) {
-                            System.out.println("Sdad hi!");
                             botExecutor.shutdownNow();
                             isWorking = false;
                             spongebotParameters.setBotWorking(false);
