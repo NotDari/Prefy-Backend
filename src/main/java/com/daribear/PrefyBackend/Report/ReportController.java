@@ -10,12 +10,15 @@ import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostService;
 import com.daribear.PrefyBackend.Posts.PostVote;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,10 @@ public class ReportController {
     private ReportService reportService;
 
     @Autowired
+    Environment environment;
+
+
+    @Autowired
     private AuthenticationService authService;
 
     @PostMapping("/SubmitReport")
@@ -41,7 +48,7 @@ public class ReportController {
 
     @GetMapping("/GetReport")
     @PreAuthorize("hasRole('ROLE_Admin')")
-    public ArrayList<Report> getReport(DefaultIncomePageable defaultIncomePageable){
+    public ArrayList<Report> getReport(DefaultIncomePageable defaultIncomePageable) throws UnknownHostException {
         return reportService.getReports(defaultIncomePageable);
     }
 

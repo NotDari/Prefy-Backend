@@ -5,10 +5,12 @@ import com.daribear.PrefyBackend.Authentication.AuthenticationService;
 import com.daribear.PrefyBackend.Email.EMAILFORMATS;
 import com.daribear.PrefyBackend.Email.EmailSender;
 import lombok.AllArgsConstructor;
+import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +21,7 @@ public class PasswordResetService {
     private final AuthenticationService authService;
     private final EmailSender emailSender;
     private final PasswordTokenRepository passwordTokenRepository;
+    private Environment environment;
 
     public String sendPasswordResetEmail(HttpServletRequest request, String email){
         Optional<Authentication> optAuth = authService.getUserByEmail(email);
@@ -28,7 +31,7 @@ public class PasswordResetService {
         Authentication auth = authService.getUserByEmail(email).get();
         String token = UUID.randomUUID().toString();
         createPasswordResetTokenForUser(auth, token);
-        emailSender.send(email, "Prefy Reset Password", EMAILFORMATS.PasswordReset("nobody", ("http://localhost:8080/prefy/v1/Login/UpdatePassword?token="+token)));
+        emailSender.send(email, "Prefy Reset Password", EMAILFORMATS.PasswordReset("nobody", (getServerAddress() + "/prefy/v1/Login/UpdatePassword?token="+token)));
         return "sent";
     }
 
@@ -43,6 +46,14 @@ public class PasswordResetService {
 
     public int setPasswordTokenConfirmed(String token){
         return passwordTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
+    }
+
+    private String getServerAddress(){
+        String address = "http://";
+        address += InetAddress.getLoopbackAddress().getHostAddress();
+        address += ":";
+        address += environment.getProperty("server.port");
+        return address;
     }
 
 

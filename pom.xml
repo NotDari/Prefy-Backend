@@ -126,6 +126,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<finalName>Spring-Boot-Application</finalName>
 	</build>
+
 
 </project>

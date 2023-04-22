@@ -20,7 +20,7 @@ public class loginOverrideController {
     @PermitAll
     @ResponseBody
     public String resetPassword() {
-        System.out.println("Sdad hiya!");
+
         return "login";
     }
 }
