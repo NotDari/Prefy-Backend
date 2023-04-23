@@ -4,6 +4,8 @@ import com.daribear.PrefyBackend.Authentication.Authentication;
 import com.daribear.PrefyBackend.Authentication.AuthenticationService;
 import com.daribear.PrefyBackend.Email.EMAILFORMATS;
 import com.daribear.PrefyBackend.Email.EmailSender;
+import com.daribear.PrefyBackend.Users.User;
+import com.daribear.PrefyBackend.Users.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,19 +21,30 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PasswordResetService {
     private final AuthenticationService authService;
+    private final UserService userService;
     private final EmailSender emailSender;
     private final PasswordTokenRepository passwordTokenRepository;
     private Environment environment;
 
-    public String sendPasswordResetEmail(HttpServletRequest request, String email){
-        Optional<Authentication> optAuth = authService.getUserByEmail(email);
-        if (optAuth.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User with Email Not Found", email));
+    public String sendPasswordReset(HttpServletRequest request, String login){
+        Optional<Authentication> optAuth;
+        if (login.contains("@")) {
+            optAuth = authService.getUserByEmail(login);
+        } else {
+            Optional<User> optUser = userService.findByUsername(login);
+            if (optUser.isPresent()){
+                optAuth = authService.getUserById(optUser.get().getId());
+            } else {
+                throw new UsernameNotFoundException(String.format("User with Email Not Found", login));
+            }
         }
-        Authentication auth = authService.getUserByEmail(email).get();
+        if (optAuth.isEmpty()) {
+            throw new UsernameNotFoundException(String.format("User with Email Not Found", login));
+        }
+        Authentication auth = optAuth.get();
         String token = UUID.randomUUID().toString();
         createPasswordResetTokenForUser(auth, token);
-        emailSender.send(email, "Prefy Reset Password", EMAILFORMATS.PasswordReset("nobody", (getServerAddress() + "/prefy/v1/Login/UpdatePassword?token="+token)));
+        emailSender.send(auth.getEmail(), "Prefy Reset Password", EMAILFORMATS.PasswordReset("nobody", (getServerAddress() + "/prefy/v1/Login/UpdatePassword?token="+token)));
         return "sent";
     }
 
@@ -52,7 +65,7 @@ public class PasswordResetService {
         String address = "http://";
         address += InetAddress.getLoopbackAddress().getHostAddress();
         address += ":";
-        address += environment.getProperty("server.port");
+        address += environment.getProperty("server.http.port");
         return address;
     }
 

@@ -1,7 +1,6 @@
 package com.daribear.PrefyBackend.Authentication.Login;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.daribear.PrefyBackend.Authentication.Authentication;
 import com.daribear.PrefyBackend.Authentication.AuthenticationService;
 import com.daribear.PrefyBackend.Authentication.PasswordReset.PasswordResetService;
 import com.daribear.PrefyBackend.Authentication.PasswordReset.PasswordSecurity;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Optional;
 
 @Controller
 @RequestMapping(path = "prefy/v1/Login")
@@ -35,8 +33,8 @@ public class LoginController {
     @PermitAll
     @ResponseBody
     public String resetPassword(HttpServletRequest request,
-                                         @RequestParam("email") String userEmail) {
-        return passwordResetService.sendPasswordResetEmail(request ,userEmail);
+                                         @RequestParam("login") String userEmail) {
+        return passwordResetService.sendPasswordReset(request ,userEmail);
     }
 
     @GetMapping("/UpdatePassword")
