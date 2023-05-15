@@ -1,7 +1,5 @@
-package com.daribear.PrefyBackend.Activity.UserActivity;
+package com.daribear.PrefyBackend.Activity.UserActivity.Votes;
 
-import com.daribear.PrefyBackend.Authentication.Authentication;
-import com.daribear.PrefyBackend.Comments.Comment;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

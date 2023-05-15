@@ -22,6 +22,8 @@ public class User {
     private Long postsNumber;
     private Long votesNumber;
     private Long prefsNumber;
+    private Long followerNumber;
+    private Long followingNumber;
     private String bio;
     private String vk;
     private String instagram;

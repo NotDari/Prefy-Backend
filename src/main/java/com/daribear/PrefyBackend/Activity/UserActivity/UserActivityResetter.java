@@ -8,4 +8,5 @@ public class UserActivityResetter {
     private Long id;
     private Long newCommentsCount;
     private Long newVotesCount;
+    private Long newFollowsCount;
 }

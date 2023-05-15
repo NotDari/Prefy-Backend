@@ -1,15 +1,14 @@
 package com.daribear.PrefyBackend.Activity;
 
 
-import com.daribear.PrefyBackend.Activity.UserActivity.CommentsActivity;
+import com.daribear.PrefyBackend.Activity.UserActivity.Comments.CommentsActivity;
 import com.daribear.PrefyBackend.Activity.UserActivity.UserActivityResetter;
-import com.daribear.PrefyBackend.Activity.UserActivity.VotesActivity;
+import com.daribear.PrefyBackend.Activity.UserActivity.Votes.VotesActivity;
 import com.daribear.PrefyBackend.Activity.UserActivity.UserActivity;
 import com.daribear.PrefyBackend.Authentication.Authentication;
 import com.daribear.PrefyBackend.Authentication.AuthenticationService;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;

@@ -1,21 +1,25 @@
 package com.daribear.PrefyBackend.Activity;
 
 import com.daribear.PrefyBackend.Activity.UserActivity.*;
+import com.daribear.PrefyBackend.Activity.UserActivity.Comments.CommentsActivity;
+import com.daribear.PrefyBackend.Activity.UserActivity.Comments.CommentsActivityRepository;
+import com.daribear.PrefyBackend.Activity.UserActivity.Follows.FollowActivity;
+import com.daribear.PrefyBackend.Activity.UserActivity.Follows.FollowActivityRepository;
+import com.daribear.PrefyBackend.Activity.UserActivity.Votes.VotesActivity;
+import com.daribear.PrefyBackend.Activity.UserActivity.Votes.VotesActivityRepository;
 import com.daribear.PrefyBackend.Comments.Comment;
-import com.daribear.PrefyBackend.Comments.CommentRepository;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
-import com.daribear.PrefyBackend.IncomeClasses.IncomePostListById;
+import com.daribear.PrefyBackend.Follow.Follow;
 import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostRepository;
-import com.daribear.PrefyBackend.Posts.PostService;
 import com.daribear.PrefyBackend.Users.User;
+import com.daribear.PrefyBackend.Users.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +32,9 @@ public class ActivityService {
     private UserActivityRepository userActivityRepo;
     private VotesActivityRepository votesActivityRepo;
     private CommentsActivityRepository commentsActivityRepo;
+    private FollowActivityRepository followActivityRepo;
     private PostRepository postRepo;
+    private UserService userService;
 
 
     public ArrayList<CommentsActivity> getCommentsActivity(Integer pageNumber, Long userId){
@@ -118,16 +124,42 @@ public class ActivityService {
         Optional<UserActivity> userActivityOpt = userActivityRepo.findById(comment.getUser().getId());
         if (userActivityOpt.isPresent()){
             UserActivity userActivity = userActivityOpt.get();
-            userActivity.setNewVotesCount(userActivity.getNewCommentsCount() + 1);
+            userActivity.setNewCommentsCount(userActivity.getNewCommentsCount() + 1);
             userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
             CommentsActivity commentsActivity = new CommentsActivity();
             commentsActivity.setText(comment.getText());
             commentsActivity.setIsReply(comment.getParentId() != null);
             commentsActivity.setPostId(comment.getPostId());
-            commentsActivity.setCreationDate(Double.valueOf(System.currentTimeMillis()));
+            commentsActivity.setCreationDate((double) System.currentTimeMillis());
             commentsActivity.setUserId(comment.getUser().getId());
             commentsActivityRepo.save(commentsActivity);
         }
+    }
+
+    public void alteredFollowing(Long userId, Long followerId, Boolean followed){
+        Optional<UserActivity> userActivityOpt = userActivityRepo.findById(userId);
+        if (userActivityOpt.isPresent()){
+            Optional<FollowActivity> followActivityOpt = followActivityRepo.findIfExists(userId, followerId);
+            UserActivity userActivity = userActivityOpt.get();
+            if (followActivityOpt.isPresent()){
+                if (followActivityOpt.get().getFollowed() != followed){
+                    userActivity.setNewFollowsCount(userActivity.getNewCommentsCount() + 1);
+                    userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
+                    FollowActivity followActivity = followActivityOpt.get();
+                    followActivity.setFollowed(followed);
+                    followActivity.setOccurrenceDate((double) System.currentTimeMillis());
+                }
+            } else {
+                FollowActivity followActivity = new FollowActivity();
+                userActivity.setNewFollowsCount(userActivity.getNewCommentsCount() + 1);
+                userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
+                followActivity.setFollowerId(followerId);
+                followActivity.setUserId(userId);
+                followActivity.setOccurrenceDate((double) System.currentTimeMillis());
+                followActivity.setFollowed(followed);
+            }
+        }
+
     }
 
 }

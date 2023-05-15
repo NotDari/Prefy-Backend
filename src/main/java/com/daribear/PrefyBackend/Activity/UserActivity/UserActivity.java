@@ -22,5 +22,6 @@ public class UserActivity {
     private Long newActivitiesCount;
     private Long newCommentsCount;
     private Long newVotesCount;
+    private Long newFollowsCount;
 
 }

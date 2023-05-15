@@ -3,6 +3,7 @@ package com.daribear.PrefyBackend.Users;
 
 import com.daribear.PrefyBackend.Authentication.Registration.RegistrationActivities;
 import com.daribear.PrefyBackend.Authentication.Registration.RegistrationService;
+import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Posts.Post;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,11 +49,7 @@ public class UserService {
     public List<User> getTopUsers(Integer pageNumber, Integer limit){
         Pageable pageable = PageRequest.of(pageNumber, limit, Sort.by("votesNumber").descending());
         Optional<List<User>> userList = userRepo.findTopUsers(pageable);
-        if (userList.isPresent()){
-            return userList.get();
-        } else {
-            return new ArrayList<>();
-        }
+        return userList.orElseGet(ArrayList::new);
     }
 
     public Boolean userNameExists(String username){
@@ -78,6 +75,36 @@ public class UserService {
             return null;
         } else {
             return optUser.get();
+        }
+    }
+
+    public void increaseFollowers(Long userId, Boolean increase){
+        Optional<User> optUser = findById(userId);
+        Integer value = 1;
+        if (!increase){
+            value = -1;
+        }
+        if (optUser.isPresent()){
+            User user = optUser.get();
+            user.setFollowerNumber(user.getFollowerNumber() + value);
+            userRepo.save(user);
+        }else {
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.USERNOTFOUND);
+        }
+    }
+
+    public void increaseFollowing(Long userId, Boolean increase){
+        Optional<User> optUser = findById(userId);
+        Integer value = 1;
+        if (!increase){
+            value = -1;
+        }
+        if (optUser.isPresent()){
+            User user = optUser.get();
+            user.setFollowingNumber(user.getFollowingNumber() + value);
+            userRepo.save(user);
+        }else {
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.USERNOTFOUND);
         }
     }
 }

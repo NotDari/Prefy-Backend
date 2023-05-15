@@ -1,4 +1,4 @@
-package com.daribear.PrefyBackend.Activity.UserActivity;
+package com.daribear.PrefyBackend.Activity.UserActivity.Comments;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

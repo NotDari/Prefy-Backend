@@ -47,23 +47,15 @@ public class LoginController {
             model.addAttribute("message", "Invalid Token");
             return "TokenInvalidFile";
         }
-        model.addAttribute("PasswordsMatch", "");
-
         return "passwordResetForm";
     }
 
     @PostMapping("/UpdatePassword")
     @PermitAll
     public String formSubmitted(HttpServletRequest request, Model model){
-        //TODO Currently, due to not having ide Ultimate edition, the javascript for the password reset doesn't work
-        String password = request.getParameter("password");
-        String confirmPassword = request.getParameter("confirmpassword");
+        String password = request.getParameter("new-password");
         String token = request.getParameter("token");
-        if (!confirmPassword.equals(password)){
-            model.addAttribute("PasswordsMatch", "Passwords do not match");
-            model.addAttribute("token", token);
-            return "passwordResetForm";
-        }
+
         String result = passwordSecurity.validatePasswordResetToken(token);
         if (result != null){
             return "TokenInvalidFile";

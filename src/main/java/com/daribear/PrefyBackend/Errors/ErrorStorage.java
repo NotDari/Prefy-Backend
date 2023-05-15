@@ -18,7 +18,9 @@ public class ErrorStorage {
 
         REGEMAILTAKE(HttpServletResponse.SC_UNAUTHORIZED,9,  "Registration Email Taken"),
 
-        CurrentUserDeleted(HttpServletResponse.SC_FORBIDDEN, 10, "Current user deleted");
+        CurrentUserDeleted(HttpServletResponse.SC_FORBIDDEN, 10, "Current user deleted"),
+
+        USERNOTFOUND(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 11, "User not found");
         public final Integer responseCode;
         public final Integer errorCode;
         public final String message;
