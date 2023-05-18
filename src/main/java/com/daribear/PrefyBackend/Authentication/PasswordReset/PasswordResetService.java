@@ -4,6 +4,7 @@ import com.daribear.PrefyBackend.Authentication.Authentication;
 import com.daribear.PrefyBackend.Authentication.AuthenticationService;
 import com.daribear.PrefyBackend.Email.EMAILFORMATS;
 import com.daribear.PrefyBackend.Email.EmailSender;
+import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class PasswordResetService {
     private final PasswordTokenRepository passwordTokenRepository;
     private Environment environment;
 
-    public String sendPasswordReset(HttpServletRequest request, String login){
+    public String sendPasswordReset(String login){
         Optional<Authentication> optAuth;
         if (login.contains("@")) {
             optAuth = authService.getUserByEmail(login);
@@ -35,11 +36,11 @@ public class PasswordResetService {
             if (optUser.isPresent()){
                 optAuth = authService.getUserById(optUser.get().getId());
             } else {
-                throw new UsernameNotFoundException(String.format("User with Email Not Found", login));
+                throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.USERNOTFOUND);
             }
         }
         if (optAuth.isEmpty()) {
-            throw new UsernameNotFoundException(String.format("User with Email Not Found", login));
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.USERNOTFOUND);
         }
         Authentication auth = optAuth.get();
         String token = UUID.randomUUID().toString();
@@ -63,9 +64,10 @@ public class PasswordResetService {
 
     private String getServerAddress(){
         String address = "http://";
-        address += InetAddress.getLoopbackAddress().getHostAddress();
+        //address += InetAddress.getLoopbackAddress().getHostAddress();
+        address += "134.122.65.104";
         address += ":";
-        address += environment.getProperty("server.http.port");
+        address += environment.getProperty("8100");
         return address;
     }
 

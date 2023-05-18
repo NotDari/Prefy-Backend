@@ -15,7 +15,6 @@ public class RegistrationController {
 
     @PostMapping
     public String register(@RequestBody RegistrationRequest request){
-        System.out.println("SdAD ADADS");
         return registrationService.register(request);
     }
 

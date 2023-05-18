@@ -4,12 +4,15 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.daribear.PrefyBackend.Authentication.AuthenticationService;
 import com.daribear.PrefyBackend.Authentication.PasswordReset.PasswordResetService;
 import com.daribear.PrefyBackend.Authentication.PasswordReset.PasswordSecurity;
+import com.daribear.PrefyBackend.Authentication.Registration.RegistrationService;
 import com.daribear.PrefyBackend.Errors.CustomError;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.JWT.JWTActions;
 import com.daribear.PrefyBackend.JWT.JWTConfig;
 import com.daribear.PrefyBackend.JWT.JWTService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -18,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 
-@Controller
+@RestController
 @RequestMapping(path = "prefy/v1/Login")
 @AllArgsConstructor
 public class LoginController {
@@ -27,18 +30,16 @@ public class LoginController {
     private final AuthenticationService authenticationService;
     private JWTService jwtService;
     private JWTConfig jwtConfig;
+    private RegistrationService registrationService;
 
 
     @PostMapping("/ResetPassword")
-    @PermitAll
     @ResponseBody
-    public String resetPassword(HttpServletRequest request,
-                                         @RequestParam("login") String userEmail) {
-        return passwordResetService.sendPasswordReset(request ,userEmail);
+    public String resetPassword(@RequestParam("login") String userEmail) {
+        return passwordResetService.sendPasswordReset(userEmail);
     }
 
     @GetMapping("/UpdatePassword")
-    @PermitAll
     public String showChangePasswordPage(@RequestParam(value = "token") String token, Model model){
         String result = passwordSecurity.validatePasswordResetToken(token);
         model.addAttribute("token", token);
@@ -51,7 +52,6 @@ public class LoginController {
     }
 
     @PostMapping("/UpdatePassword")
-    @PermitAll
     public String formSubmitted(HttpServletRequest request, Model model){
         String password = request.getParameter("new-password");
         String token = request.getParameter("token");
@@ -100,6 +100,7 @@ public class LoginController {
         authenticationService.alterPassword(id, password);
         passwordResetService.setPasswordTokenConfirmed(token);
     }
+
 
 
 

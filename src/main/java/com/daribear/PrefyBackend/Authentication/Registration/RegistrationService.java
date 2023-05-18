@@ -7,6 +7,8 @@ import com.daribear.PrefyBackend.Authentication.Registration.RegistrationToken.R
 import com.daribear.PrefyBackend.Authentication.Registration.RegistrationToken.RegistrationConfirmationTokenService;
 import com.daribear.PrefyBackend.Email.EMAILFORMATS;
 import com.daribear.PrefyBackend.Email.EmailSender;
+import com.daribear.PrefyBackend.Errors.CustomError;
+import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Security.ApplicationUserRole;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
@@ -39,7 +41,10 @@ public class RegistrationService {
     public String register(RegistrationRequest request) {
         boolean isEmailValid = emailValidator.test(request.getEmail());
         if (!isEmailValid){
-            throw new IllegalStateException("email not valid");
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.REGISTEREMAILNOTVALID);
+        }
+        if (authenticationService.getUserByEmail(request.getEmail()).isPresent()){
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.REGISTEREMAILTAKEN);
         }
         Authentication newUser = new Authentication(request.getEmail(), request.getPassword(), User.getGrantedAuthorities());
         newUser.setLocked(false);

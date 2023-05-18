@@ -137,7 +137,7 @@ public class ActivityService {
     }
 
     public void alteredFollowing(Long userId, Long followerId, Boolean followed){
-        Optional<UserActivity> userActivityOpt = userActivityRepo.findById(userId);
+        Optional<UserActivity> userActivityOpt = userActivityRepo.findById(followerId);
         if (userActivityOpt.isPresent()){
             Optional<FollowActivity> followActivityOpt = followActivityRepo.findIfExists(userId, followerId);
             UserActivity userActivity = userActivityOpt.get();

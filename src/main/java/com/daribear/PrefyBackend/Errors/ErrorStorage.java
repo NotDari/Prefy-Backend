@@ -20,7 +20,10 @@ public class ErrorStorage {
 
         CurrentUserDeleted(HttpServletResponse.SC_FORBIDDEN, 10, "Current user deleted"),
 
-        USERNOTFOUND(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 11, "User not found");
+        USERNOTFOUND(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 11, "User not found"),
+
+        REGISTEREMAILNOTVALID(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 12, "Email not valid"),
+        REGISTEREMAILTAKEN(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 13, "Email Valid");
         public final Integer responseCode;
         public final Integer errorCode;
         public final String message;
