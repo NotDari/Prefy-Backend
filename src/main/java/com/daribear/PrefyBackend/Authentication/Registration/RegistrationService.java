@@ -74,7 +74,7 @@ public class RegistrationService {
         registrationConfirmationTokenService.setConfirmedAt(token);
         authenticationService.enableAuthentication(
                 confirmationToken.getAuthentication().getEmail());
-        return "confirmed";
+        return "email_confirmed";
     }
 
     public String resendToken(String login){
@@ -147,9 +147,8 @@ public class RegistrationService {
                     );
                     registrationConfirmationTokenService.saveConfirmationToken(registrationConfirmationToken);
 
-                    //TODO This is only for the system IP address
-                    String systemipaddress = ComputerIp.getComputerAddress();
-                    emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, "http:/" + systemipaddress + ":8090/prefy/v1/Registration/Confirm?token=" + token));
+
+                    emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, ServerAddress.getServerAddress() + "/prefy/v1/Registration/Confirm?token=" + token));
                     return "Token Resent";
                 }
             } else {
