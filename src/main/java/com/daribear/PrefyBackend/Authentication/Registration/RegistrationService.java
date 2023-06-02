@@ -13,6 +13,7 @@ import com.daribear.PrefyBackend.Security.ApplicationUserRole;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
 import com.daribear.PrefyBackend.Utils.ComputerIp;
+import com.daribear.PrefyBackend.Utils.ServerAddress;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
@@ -132,7 +133,7 @@ public class RegistrationService {
                         );
                         registrationConfirmationTokenService.resendToken(registrationConfirmationToken);
                         String systemipaddress = ComputerIp.getComputerAddress();
-                        emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, "http:/" + systemipaddress + ":8090/prefy/v1/Registration/Confirm?token=" + token));
+                        emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, ServerAddress.getServerAddress() + token));
 
                         return "Token Resent";
                     }

@@ -7,6 +7,7 @@ import com.daribear.PrefyBackend.Email.EmailSender;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
+import com.daribear.PrefyBackend.Utils.ServerAddress;
 import lombok.AllArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,7 +46,7 @@ public class PasswordResetService {
         Authentication auth = optAuth.get();
         String token = UUID.randomUUID().toString();
         createPasswordResetTokenForUser(auth, token);
-        emailSender.send(auth.getEmail(), "Prefy Reset Password", EMAILFORMATS.PasswordReset("nobody", (getServerAddress() + "/prefy/v1/Login/UpdatePassword?token="+token)));
+        emailSender.send(auth.getEmail(), "Prefy Reset Password", EMAILFORMATS.PasswordReset("nobody", (ServerAddress.getServerAddress() + "/prefy/v1/Login/UpdatePassword?token="+token)));
         return "sent";
     }
 
@@ -62,14 +63,6 @@ public class PasswordResetService {
         return passwordTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
     }
 
-    private String getServerAddress(){
-        String address = "http://";
-        //address += InetAddress.getLoopbackAddress().getHostAddress();
-        address += "134.122.65.104";
-        address += ":";
-        address += environment.getProperty("8100");
-        return address;
-    }
 
 
 
