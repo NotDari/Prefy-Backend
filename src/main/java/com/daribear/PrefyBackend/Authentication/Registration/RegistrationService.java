@@ -133,7 +133,7 @@ public class RegistrationService {
                         );
                         registrationConfirmationTokenService.resendToken(registrationConfirmationToken);
                         String systemipaddress = ComputerIp.getComputerAddress();
-                        emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, ServerAddress.getServerAddress() + token));
+                        emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, ServerAddress.getServerAddress() + "/prefy/v1/Registration/Confirm?token=" + token));
 
                         return "Token Resent";
                     }
