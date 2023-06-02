@@ -104,7 +104,7 @@ public class AuthenticationService implements UserDetailsService {
         registrationConfirmationTokenService.saveConfirmationToken(registrationConfirmationToken);
         String systemipaddress = ComputerIp.getComputerAddress();
         emailSender.send(authentication.getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, "http:/" + systemipaddress + ":8090/prefy/v1/Registration/Confirm?token=" + token));
-        User user = new User(authentication.getId(), username, "none", fullName, 0L, 0L, 0L,0L, 0L, "", "", "", "", false);
+        User user = new User(authentication.getId(), username, "none", fullName, 0L, 0L, 0L,0L, 0L, "", "", "", "", false, false, null);
         userService.addNewUser(user);
         UserInfo userInfo = new UserInfo(authentication, ((Long)System.currentTimeMillis()).doubleValue(), ((Long)registrationRequest.getDOB().getTime()).doubleValue());
         userInfoService.saveUserInfo(userInfo);

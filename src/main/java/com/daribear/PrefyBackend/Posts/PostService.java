@@ -50,6 +50,7 @@ public class PostService {
     @Transactional
     public void addNewPost(Post post) {
         User user = userRepo.getById(post.getUserId());
+        post.setDeleted(false);
         user.setPostsNumber(user.getPostsNumber() + 1);
         userRepo.save(user);
         postRepo.save(post);
@@ -186,7 +187,8 @@ public class PostService {
         Post post = postRepo.findPostById(postId).get();
         User user = userRepo.findUserByID(post.getUserId()).get();
         user.setPostsNumber(user.getPostsNumber() - 1);
-        postRepo.delete(post);
+        post.setDeleted(true);
+        post.setDeletionDate((double) System.currentTimeMillis());
     }
 
 }

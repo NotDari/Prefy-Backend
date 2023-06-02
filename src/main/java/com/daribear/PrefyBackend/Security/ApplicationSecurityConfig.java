@@ -56,8 +56,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/prefy/v1/Login/**").permitAll()
                 .antMatchers("/prefy/v1/Registration/**").permitAll()
                 .antMatchers("/login").permitAll()
-                .antMatchers("/actuator/**").permitAll()
-                //.antMatchers("/actuator/**").hasRole("Admin")
+                .antMatchers("/actuator/**").hasRole("Admin")
                 .anyRequest()
                 .authenticated()
                 ;

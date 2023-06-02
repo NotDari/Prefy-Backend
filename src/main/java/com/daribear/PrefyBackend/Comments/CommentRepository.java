@@ -13,16 +13,16 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository  extends JpaRepository<Comment, Long> {
 
-    @Query("SELECT c FROM Comment c WHERE c.id = ?1")
+    @Query("SELECT c FROM Comment c WHERE c.id = ?1 AND c.deleted = 0")
     Optional<Comment> findCommentById(Long id);
 
-    @Query("Select c FROM Comment c WHERE c.postId = ?1 AND c.parentId = null")
+    @Query("Select c FROM Comment c WHERE c.postId = ?1 AND c.parentId = null AND c.deleted = 0")
     Optional<List<Comment>> findCommentByPostId(Long id, Pageable pageable);
 
-    @Query("Select c FROM Comment c WHERE c.parentId = ?1")
+    @Query("Select c FROM Comment c WHERE c.parentId = ?1 AND c.deleted = 0")
     Optional<List<Comment>> findCommentByParentId(Long id, Pageable pageable);
 
-    @Query("Select c FROM Comment c WHERE c.user = ?1")
+    @Query("Select c FROM Comment c WHERE c.user = ?1 AND c.deleted = 0")
     Optional<List<Comment>> findCommentByUserId(Long id, Pageable pageable);
 
 }

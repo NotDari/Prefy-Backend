@@ -2,6 +2,7 @@ package com.daribear.PrefyBackend.Activity;
 
 
 import com.daribear.PrefyBackend.Activity.UserActivity.Comments.CommentsActivity;
+import com.daribear.PrefyBackend.Activity.UserActivity.Follows.FollowActivity;
 import com.daribear.PrefyBackend.Activity.UserActivity.UserActivityResetter;
 import com.daribear.PrefyBackend.Activity.UserActivity.Votes.VotesActivity;
 import com.daribear.PrefyBackend.Activity.UserActivity.UserActivity;
@@ -58,9 +59,21 @@ public class ActivityController {
         return activityService.getVotesActivity(pageNumber, optionalUser.get().getId());
     }
 
+    @GetMapping("/FollowersActivity")
+    public List<FollowActivity> getFollowersActivity(Principal principal, @RequestParam Integer pageNumber){
+        if (principal == null){
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.InternalError);
+        }
+        Optional<Authentication> optionalUser = authService.getUserByEmail(principal.getName());
+        if (optionalUser.isEmpty()){
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.InternalError);
+        }
+        return activityService.getFollowersActivity(pageNumber, optionalUser.get().getId());
+    }
+
     @PostMapping("/SetUserActivity")
     public void setUserActivity(@RequestBody UserActivityResetter userActivityResetter){
-        activityService.setUserActivity(userActivityResetter.getId(), userActivityResetter.getNewCommentsCount(),userActivityResetter.getNewVotesCount());
+        activityService.setUserActivity(userActivityResetter.getId(), userActivityResetter.getNewCommentsCount(),userActivityResetter.getNewVotesCount(), userActivityResetter.getNewFollowsCount());
     }
 
 

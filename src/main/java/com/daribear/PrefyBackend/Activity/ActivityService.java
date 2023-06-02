@@ -66,6 +66,19 @@ public class ActivityService {
         }
     }
 
+    public ArrayList<FollowActivity> getFollowersActivity(Integer pageNumber, Long userId){
+        Pageable pageable = PageRequest.of(pageNumber, 10);
+        Sort sort = Sort.by(Sort.Direction.DESC, "creationDate");
+        pageable.getSortOr(sort);
+        Optional<List<FollowActivity>> followListOpt = followActivityRepo.findFollowersActivityListById(userId, pageable);
+        if (followListOpt.isPresent()){
+            ArrayList<FollowActivity> followList = new ArrayList<>(followListOpt.get());
+            return followList;
+        } else {
+            throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.InternalError);
+        }
+    }
+
     public UserActivity getUserActivity(Long id){
         Optional<UserActivity> optUserActivity = userActivityRepo.findById(id);
         if (optUserActivity.isEmpty()){
@@ -76,8 +89,8 @@ public class ActivityService {
     }
 
 
-    public void setUserActivity(Long id, Long newCommentscount, Long newVotescount){
-        if (newCommentscount == null || newVotescount == null){
+    public void setUserActivity(Long id, Long newCommentscount, Long newVotescount, Long newFollowsCount){
+        if (newCommentscount == null || newVotescount == null ){
             UserActivity tempUserActivity = userActivityRepo.getById(id);
             if (tempUserActivity == null){
                 UserActivity userActivity = new UserActivity();
@@ -94,8 +107,13 @@ public class ActivityService {
             if (newVotescount == null){
                 newVotescount = tempUserActivity.getNewVotesCount();
             }
-            Long newActivitiesCount = newVotescount + newCommentscount;
-            userActivityRepo.updateUserActivity(id, newActivitiesCount, newCommentscount, newVotescount);
+
+            if (newFollowsCount == null){
+                newFollowsCount = tempUserActivity.getNewFollowsCount();
+            }
+
+            Long newActivitiesCount = newVotescount + newCommentscount + newFollowsCount;
+            userActivityRepo.updateUserActivity(id, newActivitiesCount, newCommentscount, newVotescount, newFollowsCount);
         }
     }
 
@@ -137,13 +155,13 @@ public class ActivityService {
     }
 
     public void alteredFollowing(Long userId, Long followerId, Boolean followed){
-        Optional<UserActivity> userActivityOpt = userActivityRepo.findById(followerId);
+        Optional<UserActivity> userActivityOpt = userActivityRepo.findById(userId);
         if (userActivityOpt.isPresent()){
             Optional<FollowActivity> followActivityOpt = followActivityRepo.findIfExists(userId, followerId);
             UserActivity userActivity = userActivityOpt.get();
             if (followActivityOpt.isPresent()){
                 if (followActivityOpt.get().getFollowed() != followed){
-                    userActivity.setNewFollowsCount(userActivity.getNewCommentsCount() + 1);
+                    userActivity.setNewFollowsCount(userActivity.getNewFollowsCount() + 1);
                     userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
                     FollowActivity followActivity = followActivityOpt.get();
                     followActivity.setFollowed(followed);
@@ -151,12 +169,13 @@ public class ActivityService {
                 }
             } else {
                 FollowActivity followActivity = new FollowActivity();
-                userActivity.setNewFollowsCount(userActivity.getNewCommentsCount() + 1);
+                userActivity.setNewFollowsCount(userActivity.getNewFollowsCount()+ 1);
                 userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
                 followActivity.setFollowerId(followerId);
                 followActivity.setUserId(userId);
                 followActivity.setOccurrenceDate((double) System.currentTimeMillis());
                 followActivity.setFollowed(followed);
+                followActivityRepo.save(followActivity);
             }
         }
 

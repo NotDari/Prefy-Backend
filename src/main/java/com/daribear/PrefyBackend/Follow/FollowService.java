@@ -22,12 +22,12 @@ public class FollowService {
         Optional<Follow> followOpt = followRepo.findIfExists(userId, followerId);
         if (followOpt.isEmpty()){
             Follow follow = new Follow();
-            follow.setFollowerId(followerId);
-            follow.setUserId(userId);
+            follow.setFollowerId(userId);
+            follow.setUserId(followerId);
             follow.setFollowDate((double) System.currentTimeMillis());
-            userService.increaseFollowing(followerId, true);
-            userService.increaseFollowers(userId, true);
-            activityService.alteredFollowing(userId, followerId, true);
+            userService.increaseFollowing(userId, true);
+            userService.increaseFollowers(followerId, true);
+            activityService.alteredFollowing(followerId, userId, true);
             followRepo.save(follow);
         }
     }
@@ -35,9 +35,9 @@ public class FollowService {
     public void unfollow(Long userId, Long followerId){
         Optional<Follow> followOpt = followRepo.findIfExists(userId, followerId);
         if (followOpt.isPresent()){
-            activityService.alteredFollowing(userId, followerId, false);
-            userService.increaseFollowing(followerId, false);
-            userService.increaseFollowers(userId, false);
+            activityService.alteredFollowing(followerId, userId, false);
+            userService.increaseFollowing(userId, false);
+            userService.increaseFollowers(followerId, false);
             followRepo.delete(followOpt.get());
         }
     }

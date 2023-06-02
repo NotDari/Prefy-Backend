@@ -1,5 +1,6 @@
 package com.daribear.PrefyBackend.Users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,9 @@ public class User {
     private String instagram;
     private String twitter;
     private Boolean verified;
+
+    @JsonIgnore
+    private Boolean deleted;
+    @JsonIgnore
+    private Double deletionDate;
 }

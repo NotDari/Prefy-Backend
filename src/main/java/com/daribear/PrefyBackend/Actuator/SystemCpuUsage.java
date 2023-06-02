@@ -6,6 +6,7 @@ import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.sun.management.OperatingSystemMXBean;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

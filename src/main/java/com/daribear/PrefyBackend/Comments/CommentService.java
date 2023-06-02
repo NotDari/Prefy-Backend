@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,6 +44,7 @@ public class CommentService {
         if (checkIfValid(comment)) {
             if (userRepo.existsById(userId)){
                 comment.setUser(userRepo.getById(userId));
+                comment.setDeleted(false);
                 Post post = postRepo.findPostById(comment.getPostId()).get();
                 post.setCommentsNumber(post.getCommentsNumber() + 1);
                 postRepo.save(post);
@@ -146,7 +148,8 @@ public class CommentService {
             Post post = postRepo.getById(comment.getPostId());
             post.setCommentsNumber(postRepo.getById(comment.getPostId()).getCommentsNumber() - 1);
             postRepo.save(post);
-            commentRepo.deleteById(commentId);
+            comment.setDeleted(true);
+            comment.setDeletionDate((double) System.currentTimeMillis());
         }
     }
 }

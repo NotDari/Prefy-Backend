@@ -45,6 +45,10 @@ public class Post {
     private Boolean popular;
     private Double popularDate;
     private Boolean featured;
+    @JsonIgnore
+    private Boolean deleted;
+    @JsonIgnore
+    private Double deletionDate;
 
 
 }

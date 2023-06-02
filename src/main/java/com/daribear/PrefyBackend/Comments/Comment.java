@@ -2,6 +2,7 @@ package com.daribear.PrefyBackend.Comments;
 
 import com.daribear.PrefyBackend.Authentication.Authentication;
 import com.daribear.PrefyBackend.Users.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,12 @@ public class Comment {
 
     @Transient
     private String replyUsername;
+
+
+    @JsonIgnore
+    private Boolean deleted;
+    @JsonIgnore
+    private Double deletionDate;
 
 
 }

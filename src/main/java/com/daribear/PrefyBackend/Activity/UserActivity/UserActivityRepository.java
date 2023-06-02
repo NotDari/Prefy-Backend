@@ -23,7 +23,8 @@ public interface UserActivityRepository extends JpaRepository<UserActivity, Long
             "SET a.newActivitiesCount = ?2 " +
             ", a.newCommentsCount = ?3 " +
             ", a.newVotesCount = ?4 " +
+            ", a.newFollowsCount = ?5 " +
             "WHERE a.id = ?1 ")
-    int updateUserActivity(Long id, Long newActivitiesCount, Long newCommentscount, Long newVotescount);
+    int updateUserActivity(Long id, Long newActivitiesCount, Long newCommentscount, Long newVotescount, Long newFollowsCount);
 
 }

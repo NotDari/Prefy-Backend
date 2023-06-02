@@ -11,7 +11,9 @@ import java.util.Optional;
 
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-    @Query("Select f FROM Follow f WHERE f.userId = :userId AND f.followerId = :followerId")
+
+
+    @Query("Select f FROM Follow f WHERE f.userId = :followerId AND f.followerId = :userId")
     Optional<Follow> findIfExists(Long userId, Long followerId);
 
 

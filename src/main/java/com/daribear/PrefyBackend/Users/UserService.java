@@ -33,7 +33,7 @@ public class UserService {
     }
 
     public Optional<User> findByUsername(String username){
-        return userRepo.findByUsernameIgnoreCase(username);
+        return userRepo.findByUsername(username);
     }
 
     public List<User> initSearch(String text, Integer pageNumber, Integer limit){
@@ -53,7 +53,7 @@ public class UserService {
     }
 
     public Boolean userNameExists(String username){
-        return userRepo.findByUsernameIgnoreCase(username).isPresent();
+        return userRepo.findByUsername(username).isPresent();
     }
 
     public Optional<User> findById(Long id){
