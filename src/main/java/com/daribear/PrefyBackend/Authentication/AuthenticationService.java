@@ -13,6 +13,7 @@ import com.daribear.PrefyBackend.UserInfo.UserInfoService;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
 import com.daribear.PrefyBackend.Utils.ComputerIp;
+import com.daribear.PrefyBackend.Utils.ServerAddress;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -103,7 +104,7 @@ public class AuthenticationService implements UserDetailsService {
         );
         registrationConfirmationTokenService.saveConfirmationToken(registrationConfirmationToken);
         String systemipaddress = ComputerIp.getComputerAddress();
-        emailSender.send(authentication.getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, "http:/" + systemipaddress + ":8090/prefy/v1/Registration/Confirm?token=" + token));
+        emailSender.send(authentication.getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, ServerAddress.getServerAddress() + "/prefy/v1/Registration/Confirm?token=" + token));
         User user = new User(authentication.getId(), username, "none", fullName, 0L, 0L, 0L,0L, 0L, "", "", "", "", false, false, null);
         userService.addNewUser(user);
         UserInfo userInfo = new UserInfo(authentication, ((Long)System.currentTimeMillis()).doubleValue(), ((Long)registrationRequest.getDOB().getTime()).doubleValue());

@@ -20,14 +20,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("Select u FROM User u WHERE u.username LIKE %?1% AND u.deleted = 0")
     Optional<List<User>> findUserBySearch(String search,Pageable pageable);
 
-    @Query("Select u FROM User u WHERE   u.deleted = 0")
+    @Query("Select u FROM User u WHERE  u.deleted = 0")
     Optional<List<User>> findTopUsers(Pageable pageable);
 
 
 
-    @Query("SELECT u from User u WHERE lower(u.username) like lower(:username) AND u.deleted = 0")
+    @Query("SELECT u from User u WHERE lower(u.username) = lower(:username) AND u.deleted = 0")
     Optional<User> findByUsername(@Param("username") String username);
-
 
 
 }

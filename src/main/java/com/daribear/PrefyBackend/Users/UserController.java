@@ -53,7 +53,7 @@ public class UserController {
                 throw new CustomError(HttpServletResponse.SC_BAD_REQUEST, "Failed to find user", 10);
             }
         }else {
-            user = userService.findByUsername(username);
+            user = userService. findByUsername(username);
         }
         if (user.isPresent()){
             return user.get();

@@ -2,11 +2,12 @@ package com.daribear.PrefyBackend.Authentication.Registration;
 
 
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 
-@RestController
+@Controller
 @RequestMapping(path = "prefy/v1/Registration")
 @AllArgsConstructor
 public class RegistrationController {
@@ -14,6 +15,7 @@ public class RegistrationController {
     private RegistrationService registrationService;
 
     @PostMapping
+    @ResponseBody
     public String register(@RequestBody RegistrationRequest request){
         return registrationService.register(request);
     }
@@ -24,11 +26,13 @@ public class RegistrationController {
     }
 
     @GetMapping(path = "ResendConfirmation")
+    @ResponseBody
     public String resendConfirmationToken(@RequestParam("login")String login){
         return registrationService.resendToken(login);
     }
 
     @GetMapping(path = "/UsernameAvailable")
+    @ResponseBody
     public Boolean checkIfUsernameAvailable(@RequestParam("username") String username){
         return registrationService.usernameAvailable(username);
     }

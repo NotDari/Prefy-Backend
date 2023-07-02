@@ -46,5 +46,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.deleted = 0")
     ArrayList<Post> findExploreRecentPosts(Pageable pageable);
 
+    @Query("SELECT p FROM Post p WHERE p.question = ?1 AND p.creationDate = ?2 AND p.imageURL = ?3 AND p.deleted = 0")
+    Optional<Post> findPostByFields(String question, Double creationDate, String imageURL );
+
+
 
 }

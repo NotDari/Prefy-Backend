@@ -51,7 +51,6 @@ public class CommentService {
                 activityService.madeComment(comment);
                 commentRepo.save(comment);
             }
-
         }
     }
 

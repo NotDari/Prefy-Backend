@@ -43,6 +43,19 @@ public class PostController {
     public ArrayList<Post> getPostListByIdList(IncomePostIdList incomePostIdList){
         return postService.getPostListByIds(new ArrayList<>(incomePostIdList.getIdList()));
     }
+
+    @GetMapping("/PostById")
+    public Post getPostById(IncomePostById incomePostById){
+        return postService.getPostById(incomePostById.getId());
+    }
+
+    @GetMapping("/PostSearch")
+    @PreAuthorize("hasRole('ROLE_Admin')")
+    public List<Post> getPostBySearch(IncomePostListBySearch incomePostListBySearch){
+        return postService.getPostListBySearch(incomePostListBySearch);
+    }
+
+
     @GetMapping("/PostListById")
     public ArrayList<Post> getPostListById(IncomePostListById incomePostListById){
         return postService.getPostListById(incomePostListById);

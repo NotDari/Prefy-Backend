@@ -45,9 +45,9 @@ public class Post {
     private Boolean popular;
     private Double popularDate;
     private Boolean featured;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean deleted;
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double deletionDate;
 
 
