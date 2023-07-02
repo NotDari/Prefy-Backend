@@ -48,7 +48,7 @@ public class LoginController {
             model.addAttribute("message", "Invalid Token");
             return "TokenInvalidFile";
         }
-        return "passwordResetForm";
+        return "PasswordResetForm";
     }
 
     @PostMapping("/UpdatePassword")
