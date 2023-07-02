@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
 
-@RestController
+@Controller
 @RequestMapping(path = "prefy/v1/Login")
 @AllArgsConstructor
 public class LoginController {
@@ -52,6 +52,7 @@ public class LoginController {
     }
 
     @PostMapping("/UpdatePassword")
+    @ResponseBody
     public String formSubmitted(HttpServletRequest request, Model model){
         String password = request.getParameter("new-password");
         String token = request.getParameter("token");
