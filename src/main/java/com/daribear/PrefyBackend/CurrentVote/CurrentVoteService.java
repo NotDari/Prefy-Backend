@@ -39,6 +39,7 @@ public class CurrentVoteService {
 
     public ArrayList<CurrentVote> getCurrentVoteList(IncomeVoteListRetreiver incomeVoteListRetreiver){
         Optional<ArrayList<CurrentVote>> optCurrentVote = currentVoteRepo.findCurrentVoteList(incomeVoteListRetreiver.getUserId(), incomeVoteListRetreiver.getPostIdList());
+        /**
         if (optCurrentVote.isPresent()){
             ArrayList<CurrentVote> retrievedVotes = optCurrentVote.get();
             Integer arraySize = incomeVoteListRetreiver.getPostIdList().size();
@@ -51,6 +52,10 @@ public class CurrentVoteService {
                 }
             }
             return new ArrayList<>(Arrays.asList(currentVoteList));
+        }
+         */
+        if (optCurrentVote.isPresent()){
+            return optCurrentVote.get();
         }
         return null;
 
