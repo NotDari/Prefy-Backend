@@ -2,11 +2,13 @@ package com.daribear.PrefyBackend.CurrentVote;
 
 
 import com.daribear.PrefyBackend.IncomeClasses.IncomeVoteListRetreiver;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 @Service
@@ -36,6 +38,23 @@ public class CurrentVoteService {
     }
 
     public ArrayList<CurrentVote> getCurrentVoteList(IncomeVoteListRetreiver incomeVoteListRetreiver){
+        Optional<ArrayList<CurrentVote>> optCurrentVote = currentVoteRepo.findCurrentVoteList(incomeVoteListRetreiver.getUserId(), incomeVoteListRetreiver.getPostIdList());
+        if (optCurrentVote.isPresent()){
+            ArrayList<CurrentVote> retrievedVotes = optCurrentVote.get();
+            Integer arraySize = incomeVoteListRetreiver.getPostIdList().size();
+            CurrentVote[] currentVoteList = new CurrentVote[arraySize];
+            for (int i = 0 ; i < arraySize; i++){
+                for (int f = 0; f < retrievedVotes.size(); f ++){
+                    if (retrievedVotes.get(f).getPostId().equals(incomeVoteListRetreiver.getPostIdList().get(i))){
+                        currentVoteList[i] = retrievedVotes.get(f);
+                    }
+                }
+            }
+            return new ArrayList<>(Arrays.asList(currentVoteList));
+        }
+        return null;
+
+        /**
         ArrayList<CurrentVote> currentVoteList = new ArrayList<>();
         for (int i = 0; i < incomeVoteListRetreiver.getPostIdList().size(); i++){
             Optional<CurrentVote> optCurrentVote = currentVoteRepo.findCurrentVote(incomeVoteListRetreiver.getUserId(), incomeVoteListRetreiver.getPostIdList().get(i));
@@ -47,5 +66,6 @@ public class CurrentVoteService {
 
         }
         return currentVoteList;
+         */
     }
 }

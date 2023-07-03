@@ -52,7 +52,6 @@ public class LoginController {
     }
 
     @PostMapping("/UpdatePassword")
-    @ResponseBody
     public String formSubmitted(HttpServletRequest request, Model model){
         String password = request.getParameter("new-password");
         String token = request.getParameter("token");
