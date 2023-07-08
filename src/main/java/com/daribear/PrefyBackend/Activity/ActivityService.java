@@ -14,6 +14,7 @@ import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostRepository;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
+import com.daribear.PrefyBackend.Utils.CurrentTime;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -127,7 +128,7 @@ public class ActivityService {
             VotesActivity votesActivity = new VotesActivity();
             votesActivity.setLastUserId(submitterID);
             votesActivity.setPostId(postId);
-            votesActivity.setLastVoteDate(Double.valueOf(System.currentTimeMillis()));
+            votesActivity.setLastVoteDate(Double.valueOf(CurrentTime.getCurrentTime()));
             votesActivity.setUserId(posterId);
             if (!votesActivityRepo.existsVotesActivityByPostId(postId)) {
                 votesActivityRepo.save(votesActivity);
@@ -148,7 +149,7 @@ public class ActivityService {
             commentsActivity.setText(comment.getText());
             commentsActivity.setIsReply(comment.getParentId() != null);
             commentsActivity.setPostId(comment.getPostId());
-            commentsActivity.setCreationDate((double) System.currentTimeMillis());
+            commentsActivity.setCreationDate((double) CurrentTime.getCurrentTime());
             commentsActivity.setUserId(comment.getUser().getId());
             commentsActivityRepo.save(commentsActivity);
         }
@@ -165,7 +166,7 @@ public class ActivityService {
                     userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
                     FollowActivity followActivity = followActivityOpt.get();
                     followActivity.setFollowed(followed);
-                    followActivity.setOccurrenceDate((double) System.currentTimeMillis());
+                    followActivity.setOccurrenceDate((double) CurrentTime.getCurrentTime());
                 }
             } else {
                 FollowActivity followActivity = new FollowActivity();
@@ -173,7 +174,7 @@ public class ActivityService {
                 userActivity.setNewActivitiesCount(userActivity.getNewActivitiesCount() + 1);
                 followActivity.setFollowerId(followerId);
                 followActivity.setUserId(userId);
-                followActivity.setOccurrenceDate((double) System.currentTimeMillis());
+                followActivity.setOccurrenceDate((double) CurrentTime.getCurrentTime());
                 followActivity.setFollowed(followed);
                 followActivityRepo.save(followActivity);
             }

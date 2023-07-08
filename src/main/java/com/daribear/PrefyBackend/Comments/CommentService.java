@@ -6,6 +6,7 @@ import com.daribear.PrefyBackend.Errors.ErrorStorage;
 import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostRepository;
 import com.daribear.PrefyBackend.Users.UserRepository;
+import com.daribear.PrefyBackend.Utils.CurrentTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -148,7 +149,7 @@ public class CommentService {
             post.setCommentsNumber(postRepo.getById(comment.getPostId()).getCommentsNumber() - 1);
             postRepo.save(post);
             comment.setDeleted(true);
-            comment.setDeletionDate((double) System.currentTimeMillis());
+            comment.setDeletionDate((double) CurrentTime.getCurrentTime());
         }
     }
 }

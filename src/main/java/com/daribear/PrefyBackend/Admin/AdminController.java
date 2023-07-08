@@ -1,20 +1,21 @@
 package com.daribear.PrefyBackend.Admin;
 
 
-import com.daribear.PrefyBackend.Authentication.Registration.RegistrationRequest;
+import com.daribear.PrefyBackend.Admin.Script.*;
+import com.daribear.PrefyBackend.IncomeClasses.IncomePostListBySearch;
+import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Users.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.Id;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "prefy/v1/Admin")
 public class AdminController {
+    @Autowired
+    AdminScriptService adminScriptService;
     @Autowired
     AdminService adminService;
 
@@ -39,20 +40,28 @@ public class AdminController {
             user.setDeletionDate(incomeAdminUserClass.getDeletionDate());
         }
 
-        adminService.createAuth(incomeAdminUserClass.getEmail(), user);
+        adminScriptService.createAuth(incomeAdminUserClass.getEmail(), user);
     }
 
     @PostMapping("/AddPost")
     public OutputAdminPostClass addPost(@RequestBody IncomeAdminPostClass incomeAdminPostClass){
-        return adminService.getPostId(incomeAdminPostClass);
+        return adminScriptService.getPostId(incomeAdminPostClass);
     }
 
     @PostMapping("/AddComment")
     public void addComment(@RequestBody IncomeAdminCommentClass incomeAdminCommentClass){
-        adminService.registerComment(incomeAdminCommentClass);
+        adminScriptService.registerComment(incomeAdminCommentClass);
     }
+
     @PostMapping("/AddVote")
     public void addVote(@RequestBody IncomeAdminVoteClass incomeAdminVoteClass){
-        adminService.registerVote(incomeAdminVoteClass);
+        adminScriptService.registerVote(incomeAdminVoteClass);
     }
+
+
+    @PostMapping("/UpdatePost")
+    public void updatePost(@RequestBody Post post){
+        adminService.updatePost(post);
+    }
+
 }

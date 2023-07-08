@@ -2,6 +2,7 @@ package com.daribear.PrefyBackend.Follow;
 
 import com.daribear.PrefyBackend.Activity.ActivityService;
 import com.daribear.PrefyBackend.Users.UserService;
+import com.daribear.PrefyBackend.Utils.CurrentTime;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,7 @@ public class FollowService {
             Follow follow = new Follow();
             follow.setFollowerId(userId);
             follow.setUserId(followerId);
-            follow.setFollowDate((double) System.currentTimeMillis());
+            follow.setFollowDate((double) CurrentTime.getCurrentTime());
             userService.increaseFollowing(userId, true);
             userService.increaseFollowers(followerId, true);
             activityService.alteredFollowing(followerId, userId, true);

@@ -1,4 +1,4 @@
-package com.daribear.PrefyBackend.Admin;
+package com.daribear.PrefyBackend.Admin.Script;
 
 import lombok.Data;
 

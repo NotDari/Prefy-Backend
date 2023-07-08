@@ -8,6 +8,7 @@ import com.daribear.PrefyBackend.IncomeClasses.*;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserRepository;
 
+import com.daribear.PrefyBackend.Utils.CurrentTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.context.annotation.Bean;
@@ -267,7 +268,7 @@ public class PostService {
         User user = userRepo.findUserByID(post.getUserId()).get();
         user.setPostsNumber(user.getPostsNumber() - 1);
         post.setDeleted(true);
-        post.setDeletionDate((double) System.currentTimeMillis());
+        post.setDeletionDate((double) CurrentTime.getCurrentTime());
     }
 
 }

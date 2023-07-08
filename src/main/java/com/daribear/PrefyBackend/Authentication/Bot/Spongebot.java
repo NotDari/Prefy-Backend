@@ -2,6 +2,7 @@ package com.daribear.PrefyBackend.Authentication.Bot;
 
 import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostService;
+import com.daribear.PrefyBackend.Utils.CurrentTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -72,7 +73,7 @@ public class Spongebot {
                     if (optional.isPresent()) {
                         SpongebotParameters spongebotParameters = optional.get();
                         System.out.println("Sdad test" + spongebotParameters.getStopCounter());
-                        Long startTime = (System.currentTimeMillis());
+                        Long startTime = (CurrentTime.getCurrentTime());
                         if (spongebotParameters.getPopularCounter() > 0) {
                             PopularPostsRetreiver(spongebotParameters);
                         }
