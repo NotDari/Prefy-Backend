@@ -19,4 +19,5 @@ public class RegistrationRequest {
     private final String username;
 
     private final Date DOB;
+    private final String token;
 }

@@ -23,7 +23,8 @@ public class ErrorStorage {
         USERNOTFOUND(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 11, "User not found"),
 
         REGISTEREMAILNOTVALID(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 12, "Email not valid"),
-        REGISTEREMAILTAKEN(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 13, "Email Valid");
+        REGISTEREMAILTAKEN(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 13, "Email Already taken"),
+        NOTVALIDDEVICE(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, 14, "NOT Valid Device");
         public final Integer responseCode;
         public final Integer errorCode;
         public final String message;

@@ -24,7 +24,6 @@ public class SpongeBotController  {
 
 
     @PostMapping("/SwitchBotOn/{on}")
-    @PermitAll
     public void checkSpongebot(@PathVariable Boolean on){
         Optional<SpongebotParameters> optional = sbotService.getSpongeBotParameters();
         if (optional.isPresent()){
@@ -40,7 +39,6 @@ public class SpongeBotController  {
     }
 
     @GetMapping("/ResetSpongebot")
-    @PermitAll
     public void resetSpongebot(){
         SpongebotParameters spongebotParameters = new SpongebotParameters("Spongebot", false, false,false,  0L, 0L, 0L, 0, 0);
         sbotService.updateSpongeBotParameters(spongebotParameters);

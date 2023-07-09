@@ -58,6 +58,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/actuator/**").hasRole("Admin")
                 .antMatchers("/prefy/v1/Admin/**").hasRole("Admin")
+                .antMatchers("prefy/v1/Spongebot").hasRole("Admin")
                 .anyRequest()
                 .authenticated()
                 ;

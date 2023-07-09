@@ -13,6 +13,7 @@ import com.daribear.PrefyBackend.Security.ApplicationUserRole;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
 import com.daribear.PrefyBackend.Utils.ComputerIp;
+import com.daribear.PrefyBackend.Utils.IntegrityApi.IntegrityHelper;
 import com.daribear.PrefyBackend.Utils.ServerAddress;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -40,6 +41,7 @@ public class RegistrationService {
     private RegistrationConfirmationTokenService registrationConfirmationTokenService;
 
     public String register(RegistrationRequest request) {
+        (new IntegrityHelper()).getToken(request.getToken());
         boolean isEmailValid = emailValidator.test(request.getEmail());
         if (!isEmailValid){
             throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.REGISTEREMAILNOTVALID);
@@ -50,6 +52,7 @@ public class RegistrationService {
         Authentication newUser = new Authentication(request.getEmail(), request.getPassword(), User.getGrantedAuthorities());
         newUser.setLocked(false);
         newUser.setEnabled(false);
+
         return authenticationService.signUpUser(newUser, request);
     }
 

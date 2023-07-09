@@ -110,7 +110,7 @@ public class AuthenticationService implements UserDetailsService {
         userService.addNewUser(user);
         UserInfo userInfo = new UserInfo(authentication, ((Long) CurrentTime.getCurrentTime()).doubleValue(), ((Long)registrationRequest.getDOB().getTime()).doubleValue());
         userInfoService.saveUserInfo(userInfo);
-        return "it works";
+        return "success";
     }
 
     public int alterPassword(Long id, String newPassword){

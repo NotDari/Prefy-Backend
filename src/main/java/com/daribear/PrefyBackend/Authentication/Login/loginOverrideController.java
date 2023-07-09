@@ -3,10 +3,7 @@ package com.daribear.PrefyBackend.Authentication.Login;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +16,9 @@ public class loginOverrideController {
     @PostMapping("/login")
     @PermitAll
     @ResponseBody
-    public String resetPassword() {
-
+    public String login(@RequestBody String token) {
         return "login";
     }
+
+
 }
