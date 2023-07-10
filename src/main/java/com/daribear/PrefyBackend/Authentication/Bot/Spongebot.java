@@ -55,7 +55,6 @@ public class Spongebot {
                         executorService.shutdownNow();
                     }
                 } catch (Exception e){
-                    System.out.println("Sdad exception + " + e);
                 }
             }
         }, 0, 2, TimeUnit.SECONDS);
