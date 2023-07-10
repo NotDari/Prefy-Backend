@@ -49,7 +49,6 @@ public class Spongebot {
 
                         }
                         if (!spongebotParams.get().getBotOn()){
-                            System.out.println("Sdad BOT OFF");
                             executorService.shutdownNow();
                         }
                     } else {
