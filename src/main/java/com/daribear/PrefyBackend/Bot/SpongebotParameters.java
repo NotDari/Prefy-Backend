@@ -1,4 +1,4 @@
-package com.daribear.PrefyBackend.Authentication.Bot;
+package com.daribear.PrefyBackend.Bot;
 
 
 import lombok.AllArgsConstructor;

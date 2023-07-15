@@ -180,10 +180,6 @@ public class PostService {
         Pageable pageable = createPageable(defaultIncomePageable.getPageNumber(), defaultIncomePageable.getLimit());
         return postRepo.findFeaturedPosts(pageable);
     }
-    public ArrayList<Post> getPopularPosts(PopularIncomePageable popularIncomePageable){
-        Pageable pageable = PageRequest.of(0, popularIncomePageable.getLimit(), Sort.by("popularDate").descending());
-        return postRepo.findPopularPosts(pageable, popularIncomePageable.getLastPopularDate(), popularIncomePageable.getUserId());
-    }
 
     private Pageable createPageable(Integer pageNumber, Integer limit){
         Pageable pageable = PageRequest.of(pageNumber, limit, Sort.by("creationDate").descending());
@@ -194,7 +190,7 @@ public class PostService {
         return postRepo.findExploreRecentPosts(createPageable(defaultIncomePageable.getPageNumber(), defaultIncomePageable.getLimit()));
     }
 
-    public ArrayList<Post> newGetPopularPosts(NewPopularIncomePageable newPopularIncomePageable){
+    public ArrayList<Post> getPopularPosts(NewPopularIncomePageable newPopularIncomePageable){
         Pageable pageable = PageRequest.of(0, newPopularIncomePageable.getLimit(), Sort.by("popularDate").descending());
         return postRepo.findNewPopularPosts(pageable,newPopularIncomePageable.getUserId(), newPopularIncomePageable.getIgnoreList());
     }

@@ -27,8 +27,6 @@ public class SuggestionController {
     }
 
     @GetMapping("/AllSuggestions")
-    @RolesAllowed("Owner")
-    @PreAuthorize("hasAuthority('Role_Owner')")
     public List<Suggestion> getAllSuggestions(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

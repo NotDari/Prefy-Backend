@@ -69,16 +69,12 @@ public class PostController {
         return postService.getFeaturedPosts(defaultIncomePageable);
     }
 
-    @GetMapping("/PopularPosts")
-    public ArrayList<Post> getPopularPosts(PopularIncomePageable popularIncomePageable){
-        return postService.getPopularPosts(popularIncomePageable);
-    }
 
 
 
-    @PostMapping("/NewPopularPosts")
+    @PostMapping("/PopularPosts")
     public ArrayList<Post> getNewPopularPosts(@RequestBody NewPopularIncomePageable newPopularIncomePageable){
-        return postService.newGetPopularPosts(newPopularIncomePageable);
+        return postService.getPopularPosts(newPopularIncomePageable);
     }
 
     @GetMapping("/ExploreRecentPosts")

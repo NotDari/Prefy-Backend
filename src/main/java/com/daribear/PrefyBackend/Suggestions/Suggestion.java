@@ -26,5 +26,5 @@ public class Suggestion {
     private long id;
     private String suggestionText;
     private Double creationDate;
-    private String username;
+    private Long userId;
 }

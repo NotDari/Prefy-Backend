@@ -11,6 +11,7 @@ import java.util.Date;
 @Entity
 @Table
 @AllArgsConstructor
+@NoArgsConstructor
 public class UserInfo {
 
 

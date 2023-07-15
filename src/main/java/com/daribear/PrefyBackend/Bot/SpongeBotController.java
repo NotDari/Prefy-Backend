@@ -1,10 +1,9 @@
-package com.daribear.PrefyBackend.Authentication.Bot;
+package com.daribear.PrefyBackend.Bot;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import java.util.Optional;
 
 @RestController

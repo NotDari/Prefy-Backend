@@ -1,4 +1,4 @@
-package com.daribear.PrefyBackend.Authentication.Bot;
+package com.daribear.PrefyBackend.Bot;
 
 import com.daribear.PrefyBackend.Posts.Post;
 import com.daribear.PrefyBackend.Posts.PostService;
