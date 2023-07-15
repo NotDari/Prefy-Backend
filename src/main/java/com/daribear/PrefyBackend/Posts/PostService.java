@@ -258,12 +258,14 @@ public class PostService {
 
 
     @Transactional
-    public void deletePost(Long postId){
+    public void deletePost(Long postId, Long userId){
         Post post = postRepo.findPostById(postId).get();
-        User user = userRepo.findUserByID(post.getUserId()).get();
-        user.setPostsNumber(user.getPostsNumber() - 1);
-        post.setDeleted(true);
-        post.setDeletionDate((double) CurrentTime.getCurrentTime());
+        if (userId.equals(post.getUserId())) {
+            User user = userRepo.findUserByID(post.getUserId()).get();
+            user.setPostsNumber(user.getPostsNumber() - 1);
+            post.setDeleted(true);
+            post.setDeletionDate((double) CurrentTime.getCurrentTime());
+        }
     }
 
 }

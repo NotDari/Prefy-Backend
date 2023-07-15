@@ -84,7 +84,7 @@ public class PostController {
 
     @PutMapping("/DeletePost")
     public void deletePost(@RequestBody DeleteItemWrapper deleteItemWrapper){
-        postService.deletePost(deleteItemWrapper.getItemId());
+        postService.deletePost(deleteItemWrapper.getItemId(), deleteItemWrapper.getUserId());
     }
 
 
