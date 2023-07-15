@@ -18,7 +18,6 @@ public class SpongebotService {
 
     @Autowired
     public SpongebotService(SpongeBotRepository botRepo){
-        System.out.println("Sdad Repo" + botRepo);
         this.botRepo = botRepo;
     }
 

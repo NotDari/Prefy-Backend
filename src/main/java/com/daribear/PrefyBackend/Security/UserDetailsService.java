@@ -19,7 +19,6 @@ public class UserDetailsService implements org.springframework.security.core.use
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        System.out.println("Sdad HELLO" + username);
         Optional<Authentication> emailAuth = authRepo.findByEmail(username);
         Optional<User> Id = userRepo.findByUsername(username);
         if (emailAuth.isEmpty() && Id.isEmpty()){

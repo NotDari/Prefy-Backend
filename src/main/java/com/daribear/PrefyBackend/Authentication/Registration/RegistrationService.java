@@ -84,7 +84,6 @@ public class RegistrationService {
         String email;
         String username;
         Optional<Authentication> auth;
-        System.out.println("Sdad login:" + login);
         if (login.contains("@")){
             email = login;
             auth = authenticationService.getUserByEmail(email);
@@ -114,9 +113,7 @@ public class RegistrationService {
                 return "Error Account doesn't exist";
             }
         }
-        System.out.println("Sdad emailToken AUTH PRESENT? : " + auth.isPresent());
         if (auth.isPresent()){
-            System.out.println("Sdad emailToken AUTH PRESENT");
             if (!auth.get().getEnabled()){
                 Optional<RegistrationConfirmationToken> oldToken = registrationConfirmationTokenService.getTokenByAuthId(auth.get().getId());
                 if (oldToken.isPresent()){

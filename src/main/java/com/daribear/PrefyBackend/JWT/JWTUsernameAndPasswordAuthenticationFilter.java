@@ -73,9 +73,7 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
             Authentication authenticate = authenticationManager.authenticate(authentication);
 
             com.daribear.PrefyBackend.Authentication.Authentication details = (com.daribear.PrefyBackend.Authentication.Authentication) authenticate.getPrincipal();
-            System.out.println("Sdad hi: " + details.getLocked());
             if (details.getLocked()){
-                System.out.println("Sdad hi!");
                 CustomError customError = new CustomError(HttpServletResponse.SC_UNAUTHORIZED, "Locked", 1);
                 CustomErrorObjectMapper.getResponse(response, customError);
                 return null;
@@ -90,7 +88,6 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        System.out.println("Sdad hi!");
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtConfig.getSecretKey());
             Iterator<? extends GrantedAuthority> it = authResult.getAuthorities().iterator();
@@ -161,7 +158,6 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.toString());
         response.getWriter().write(json);
-        System.out.println("Sdad failedMessage:" + failed.getMessage());
 
     }
 

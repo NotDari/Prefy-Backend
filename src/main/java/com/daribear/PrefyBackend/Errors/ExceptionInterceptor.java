@@ -29,7 +29,6 @@ public class ExceptionInterceptor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CustomError.class)
     protected ResponseEntity<CustomError> handleAllExceptions(CustomError e) {
-        System.out.println("4129 HANDLER CALLED!");
         ErrorSchema exceptionResponse =
                 new ErrorSchema(
                         e.getMessage(), ((CustomError)e).getCustomCode());
@@ -38,7 +37,6 @@ public class ExceptionInterceptor extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = AccessDeniedException.class)
     protected ResponseEntity<Object> test(Exception e){
-        System.out.println("Sdad testing");
         return  new ResponseEntity<>(e, HttpStatus.HTTP_VERSION_NOT_SUPPORTED);
     }
 

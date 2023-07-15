@@ -32,7 +32,6 @@ public class SuggestionController {
 
         Set<String> roles = authentication.getAuthorities().stream()
                 .map(r -> r.getAuthority()).collect(Collectors.toSet());
-        System.out.println("Sdad test" + roles);
         //throw new CustomError(HttpServletResponse.SC_UNAUTHORIZED, "Test", 1);
         return suggestionService.getAllSuggestions();
     }

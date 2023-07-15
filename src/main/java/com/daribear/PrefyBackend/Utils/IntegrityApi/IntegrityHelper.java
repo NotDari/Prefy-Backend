@@ -21,25 +21,20 @@ public class IntegrityHelper {
 
     public void getToken(String token){
         try {
-            System.out.println("Sdad 1" + token);
             DecodeIntegrityTokenRequest requestObj = new DecodeIntegrityTokenRequest();
             requestObj.setIntegrityToken(token);
             GoogleCredentials credentials = GoogleCredentials.fromStream(Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream("playIntegrityCredentials.json"));
             HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
-            System.out.println("Sdad 2");
             HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
             JsonFactory JSON_FACTORY = new JacksonFactory();
             GoogleClientRequestInitializer initialiser = new PlayIntegrityRequestInitializer();
 
-            System.out.println("Sdad 3");
             PlayIntegrity.Builder playIntegrity = new PlayIntegrity.Builder(HTTP_TRANSPORT, JSON_FACTORY, requestInitializer).setApplicationName("Prefy")
                     .setGoogleClientRequestInitializer(initialiser);
             PlayIntegrity play = playIntegrity.build();
-            System.out.println("Sdad 4");
             DecodeIntegrityTokenResponse response = play.v1().decodeIntegrityToken("com.daribear.prefy", requestObj).execute();
             DeviceIntegrity deviceIntegrity = response.getTokenPayloadExternal().getDeviceIntegrity();
             if(!deviceIntegrity.getDeviceRecognitionVerdict().contains("MEETS_DEVICE_INTEGRITY")) {
-                System.out.println("Sdad 5");
                 throw new Exception("Does not meet Device Integrity.");
             }
 

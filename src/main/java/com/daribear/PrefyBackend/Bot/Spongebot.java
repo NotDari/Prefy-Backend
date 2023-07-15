@@ -37,7 +37,6 @@ public class Spongebot {
         executorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                System.out.println("Sdad checking for BotWorking");
                 try {
                     Optional<SpongebotParameters> spongebotParams = sbotService.getSpongeBotParameters();
                     if (spongebotParams.isPresent()) {
@@ -70,7 +69,6 @@ public class Spongebot {
                     Optional<SpongebotParameters> optional = sbotService.getSpongeBotParameters();
                     if (optional.isPresent()) {
                         SpongebotParameters spongebotParameters = optional.get();
-                        System.out.println("Sdad test" + spongebotParameters.getStopCounter());
                         Long startTime = (CurrentTime.getCurrentTime());
                         if (spongebotParameters.getPopularCounter() > 0) {
                             PopularPostsRetreiver(spongebotParameters);
@@ -103,7 +101,6 @@ public class Spongebot {
                     }
 
                 } catch (Exception e){
-                    System.out.println("Sdad exceptionEEE" + e);
                 }
 
             }
@@ -117,7 +114,6 @@ public class Spongebot {
         Optional<List<Post>> postOptional = postService.getBotPosts(pageable, true, false, spongebotParameters.getBothFeaPop());
         if (postOptional.isPresent()){
             List<Post> postList = postOptional.get();
-            System.out.println("Sdad postCOunt" + postList.size());
             for (Post post : postList){
                 int random = (int )(Math.random() * 2 + 1);
                 if (random == 1){

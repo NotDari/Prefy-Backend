@@ -31,10 +31,8 @@ public class EmailService implements EmailSender {
             mimeMessageHelper.setTo(to);
             mimeMessageHelper.setSubject(subject);
             mimeMessageHelper.setFrom(new InternetAddress("support@daribear.com", "Prefy Support"));
-            System.out.println("Sdad sending!" + to);
             mailSender.send(mimeMessage);
         } catch (MessagingException | UnsupportedEncodingException e){
-            logger.error("failed to send email", e);
             throw new IllegalStateException("failed to send email");
         }
     }

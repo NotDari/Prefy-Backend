@@ -197,7 +197,6 @@ public class PostService {
 
 
     public List<Post> getPostListBySearch(IncomePostListBySearch incomePostListBySearch){
-        System.out.println("Sdad hiL" + incomePostListBySearch.toString());
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Post> cr = cb.createQuery(Post.class);
         Root<Post> root = cr.from(Post.class);

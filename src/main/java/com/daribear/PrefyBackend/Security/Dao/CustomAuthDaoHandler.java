@@ -21,7 +21,6 @@ public class CustomAuthDaoHandler {
     private AuthenticationRepository authRepo;
 
     public UsernamePasswordAuthenticationToken authenticate (Authentication authentication) {
-        System.out.println("Sdad aa");
         String username = authentication.getPrincipal() + "";
         String password = authentication.getCredentials() + "";
 

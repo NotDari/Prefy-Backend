@@ -75,7 +75,6 @@ public class AuthenticationService implements UserDetailsService {
     }
 
     public Optional<Authentication> getUserById(Long id){
-        System.out.println("Sdad alaooa" + id);
         return authRepository.findById(id);
     }
 

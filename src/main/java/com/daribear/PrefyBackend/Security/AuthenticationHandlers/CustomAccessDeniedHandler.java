@@ -21,7 +21,6 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException e) {
         CustomError customError =  new CustomError(HttpServletResponse.SC_FORBIDDEN,"User doesn't have permissions", 10);
         CustomErrorObjectMapper.getResponse(response,customError);
-        System.out.println("Sdad EXception:");
         //throw customError;
 
         // You can create your own repsonse here to handle method level access denied reponses..
