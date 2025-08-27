@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Important files ###
+src/main/resources/application.properties
+src/main/resources/*.p12
+src/main/resources/playIntegrityCredentials.json
