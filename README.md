@@ -74,11 +74,11 @@ and it has full Javascript validation to ensure they choose a valid password.
 <table>
 <tr>
   <td align="center">
-    <img src="README-assets/ResetPasswordEmail.png" width="200"/><br/>
+    <img src="README-Assets/ResetPasswordEmail.png" width="200"/><br/>
     <b>Password reset email</b>
   </td>
   <td align="center" >
-    <img src="README-assets/Password-Reset.png" width="260"/><br/>
+    <img src="README-Assets/Password-Reset.png" width="260"/><br/>
     <b>Password reset form</b>
   </td>
 </tr>
