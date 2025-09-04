@@ -9,14 +9,29 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * Repository for handling all of the actions surrounding the UserActivity Entity.
+ */
 @Repository
 public interface UserActivityRepository extends JpaRepository<UserActivity, Long> {
 
 
-
-
+    /**
+     * Attempts to find a userActivity with the same id as the one provided.
+     * @param id id of the userActivity to attempt to find
+     * @return an optional user activity if it exists
+     */
     Optional<UserActivity> findById(Long id);
 
+    /**
+     * Updates a userActivity, and modifies newActivitiesCount,newCommentscount,newVotescount and newFollowsCount.
+     * @param id id of the user id to update
+     * @param newActivitiesCount newActivitiesCount to replace the old one with
+     * @param newCommentscount newCommentscount to replace the old one with
+     * @param newVotescount newVotescount to replace the old one with
+     * @param newFollowsCount newFollowsCount to replace the old one with
+     * @return a 1 if successful, the 0 if not
+     */
     @Transactional
     @Modifying
     @Query("UPDATE UserActivity a " +

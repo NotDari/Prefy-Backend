@@ -7,6 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * The entity which indicates the votes received on posts obtained by a user.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

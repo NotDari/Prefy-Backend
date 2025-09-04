@@ -8,6 +8,9 @@ import lombok.ToString;
 
 import java.util.Date;
 
+/**
+ * The data entity which represents the Registration Request.
+ */
 @AllArgsConstructor
 @Getter
 @EqualsAndHashCode

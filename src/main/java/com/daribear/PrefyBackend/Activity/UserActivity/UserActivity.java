@@ -11,6 +11,10 @@ import java.util.ArrayList;
 
 import static javax.persistence.FetchType.LAZY;
 
+/**
+ * The Entity represents the UserActivity which holds the totals of all the activities counts.
+ * This is used to display to the user the number of activities since they've last checked it.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

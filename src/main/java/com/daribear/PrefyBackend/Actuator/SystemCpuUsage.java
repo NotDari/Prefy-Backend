@@ -17,10 +17,18 @@ import java.lang.management.ManagementFactory;
 import java.security.Principal;
 import java.util.Optional;
 
+/**
+ * An endpoint for monitoring System CPU usage, where you want to return the cpu usage
+ *
+ */
 @Component
 @Endpoint(id = "systemCpu")
 public class SystemCpuUsage {
 
+    /**
+     * Returns the current percentage usage of the cpu under load.
+     * @return (double) CPU usage as a percentage
+     */
     @ReadOperation
     public Double getSystemCPU(){
         OperatingSystemMXBean osBean = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean.class);

@@ -17,18 +17,28 @@ import com.google.auth.oauth2.GoogleCredentials;
 
 import java.util.Objects;
 
+/**
+ * Used for interactions with google play's integrity api, to verify its a valid connection.
+ * Its only used when registering/logging in to reduce overusage of the api.
+ */
 public class IntegrityHelper {
-
-    public void getToken(String token){
+    /**
+     * Attempts to validate the token provided to ensure the device is of the correct integrity.
+     * @param token token provided by the device
+     */
+    public void validateToken(String token){
         try {
+            //Create a request with the token
             DecodeIntegrityTokenRequest requestObj = new DecodeIntegrityTokenRequest();
             requestObj.setIntegrityToken(token);
+            //Get the set credentials
             GoogleCredentials credentials = GoogleCredentials.fromStream(Objects.requireNonNull(getClass().getClassLoader()).getResourceAsStream("playIntegrityCredentials.json"));
             HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
             HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
             JsonFactory JSON_FACTORY = new JacksonFactory();
             GoogleClientRequestInitializer initialiser = new PlayIntegrityRequestInitializer();
 
+            //Decode the token using the play integrity api and check
             PlayIntegrity.Builder playIntegrity = new PlayIntegrity.Builder(HTTP_TRANSPORT, JSON_FACTORY, requestInitializer).setApplicationName("Prefy")
                     .setGoogleClientRequestInitializer(initialiser);
             PlayIntegrity play = playIntegrity.build();
@@ -39,6 +49,7 @@ public class IntegrityHelper {
             }
 
         } catch (Exception e){
+            //Invalid token
             throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.NOTVALIDDEVICE);
         }
     }

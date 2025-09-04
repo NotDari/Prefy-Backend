@@ -5,6 +5,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * Entity representing one user following another.
+ */
 @Data
 @Entity
 @Table

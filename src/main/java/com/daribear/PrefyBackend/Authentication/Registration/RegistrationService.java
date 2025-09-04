@@ -7,25 +7,16 @@ import com.daribear.PrefyBackend.Authentication.Registration.RegistrationToken.R
 import com.daribear.PrefyBackend.Authentication.Registration.RegistrationToken.RegistrationConfirmationTokenService;
 import com.daribear.PrefyBackend.Email.EMAILFORMATS;
 import com.daribear.PrefyBackend.Email.EmailSender;
-import com.daribear.PrefyBackend.Errors.CustomError;
 import com.daribear.PrefyBackend.Errors.ErrorStorage;
-import com.daribear.PrefyBackend.Security.ApplicationUserRole;
 import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
-import com.daribear.PrefyBackend.Utils.ComputerIp;
 import com.daribear.PrefyBackend.Utils.IntegrityApi.IntegrityHelper;
 import com.daribear.PrefyBackend.Utils.ServerAddress;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,7 +32,7 @@ public class RegistrationService {
     private RegistrationConfirmationTokenService registrationConfirmationTokenService;
 
     public String register(RegistrationRequest request) {
-        (new IntegrityHelper()).getToken(request.getToken());
+        (new IntegrityHelper()).validateToken(request.getToken());
         boolean isEmailValid = emailValidator.test(request.getEmail());
         if (!isEmailValid){
             throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.REGISTEREMAILNOTVALID);
@@ -132,7 +123,6 @@ public class RegistrationService {
                                 auth.get()
                         );
                         registrationConfirmationTokenService.resendToken(registrationConfirmationToken);
-                        String systemipaddress = ComputerIp.getComputerAddress();
                         emailSender.send(auth.get().getEmail(),"Prefy Confirm Email", EMAILFORMATS.RegistrationConfirmation(username, ServerAddress.getServerAddress() + "/prefy/v1/Registration/Confirm?token=" + token));
 
                         return "Token Resent";

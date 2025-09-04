@@ -8,6 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+/**
+ * The entity which indicates the followers obtained by a user.
+ */
 @Data
 @NoArgsConstructor
 @Entity

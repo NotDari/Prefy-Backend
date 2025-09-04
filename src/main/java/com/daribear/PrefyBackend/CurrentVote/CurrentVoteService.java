@@ -19,24 +19,47 @@ public class CurrentVoteService {
     public CurrentVoteService() {
     }
 
+    //Dependancy injection
     @Autowired
     public CurrentVoteService (CurrentVoteRepository currentVoteRepo){
         this.currentVoteRepo = currentVoteRepo;
     }
 
+    /**
+     * Attempts to get a currentVote from a specific user on a specific post.
+     *
+     * @param userId user id to get vote from
+     * @param postId post id to get from from
+     * @return Optional<CurrentVote> currentVote if it exists
+     */
     public Optional<CurrentVote> getCurrentVote(Long userId, Long postId){
         return currentVoteRepo.findCurrentVote(userId, postId);
     }
 
+    /**
+     * Saves a current vote to the repo
+     * @param currentVote current vote to be saved
+     */
     public void saveCurrentVote(CurrentVote currentVote){
 
         currentVoteRepo.save(currentVote);
     }
 
+    /**
+     * Updates a current vote in the repo.
+     * @param voteId vote id to be altered
+     * @param vote vote status to update to
+     */
     public void updateCurrentVote(Long voteId, String vote){
         currentVoteRepo.updateCurrentVoteVote(voteId, vote);
     }
 
+    /**
+     * Gets a list of votes for a user for a list of posts.
+     * Posts don't necessarily have to have votes.
+     * @param incomeVoteListRetreiver class containing userid and list of post ids
+     * @return List of currentVotes
+     */
     public ArrayList<CurrentVote> getCurrentVoteList(IncomeVoteListRetreiver incomeVoteListRetreiver){
         Optional<ArrayList<CurrentVote>> optCurrentVote = currentVoteRepo.findCurrentVoteList(incomeVoteListRetreiver.getUserId(), incomeVoteListRetreiver.getPostIdList());
         if (optCurrentVote.isPresent()){

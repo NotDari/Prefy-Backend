@@ -6,6 +6,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * The entity for a report added by the user.
+ * It can be associated with a certain post, comment or user.
+ */
 @Data
 @Entity
 @Table

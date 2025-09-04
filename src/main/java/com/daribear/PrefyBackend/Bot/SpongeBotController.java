@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+/**
+ *
+ */
 @RestController
 @RequestMapping(path = "prefy/v1/Spongebot")
 public class SpongeBotController  {

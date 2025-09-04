@@ -7,10 +7,20 @@ import org.springframework.http.MediaType;
 import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Helper class to writing my custom error into the http response
+ */
 public class CustomErrorObjectMapper {
+    /**
+     * Writes the custom error into the response provided.
+     * @param response response to write into
+     * @param error error to write in
+     * @return new response
+     */
     public static HttpServletResponse getResponse(HttpServletResponse response, CustomError error){
         ErrorSchema errorSchema = new ErrorSchema(error.getMessage(), error.getCustomCode());
         try {
+            //Write the response
             ObjectMapper objectMapper = new ObjectMapper();
             String json = objectMapper.writeValueAsString(errorSchema);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

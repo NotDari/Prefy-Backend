@@ -24,6 +24,11 @@ import java.util.Optional;
 
 import static com.daribear.PrefyBackend.Security.ApplicationUserRole.User;
 
+/**
+ * This is the service for the handling of the admin scripts.
+ * Only works if Admins services are turned on(which is based on the ENABLED variable).
+ *
+ */
 @Service
 @Component
 public class AdminScriptService {
@@ -49,7 +54,13 @@ public class AdminScriptService {
     private CurrentVoteRepository currentVoteRepo;
 
 
-
+    /**
+     * This function creates a new blank account with the details provided, and user level permissions.
+     * Only works if ENABLED is turned on.
+     *
+     * @param email email to create the account with
+     * @param user user details to create the account with
+     */
     public void createAuth(String email, com.daribear.PrefyBackend.Users.User user){
         if (!ENABLED){
             return;
@@ -80,6 +91,12 @@ public class AdminScriptService {
 
     }
 
+    /**
+     * If the user provided is valid and ENABLED is turned on, registers a new post with the provided details.
+     *
+     * @param incomeAdminPostClass class containing all the details required to create the new post.
+     * @return the Output post representing the new post that's been created
+     */
     public OutputAdminPostClass registerPost(IncomeAdminPostClass incomeAdminPostClass){
         if (!ENABLED){
             return null;
@@ -100,10 +117,12 @@ public class AdminScriptService {
             post.setDeleted(incomeAdminPostClass.getDeleted());
             post.setDeletionDate(incomeAdminPostClass.getDeletionDate());
         }
+        //Check the user provided is valid
         Optional<com.daribear.PrefyBackend.Users.User> user = userService.findByUsername(incomeAdminPostClass.username);
         if (user.isEmpty()) {
             return null;
         }
+        //Save post
         post.setUserId(user.get().getId());
         postRepo.save(post);
         OutputAdminPostClass outputPost = new OutputAdminPostClass();
@@ -114,6 +133,13 @@ public class AdminScriptService {
 
     }
 
+    /**
+     * The retrieval of a post by passing in the question, creation date and the image URL. The id of the post and the user id will be returned.
+     * Only works if ENABLED is turned on.
+     *
+     * @param incomeAdminPostClass The class containing post details.
+     * @return The OutputAdminPostClass containing the post and user id if exists.
+     */
     public OutputAdminPostClass getPostId(IncomeAdminPostClass incomeAdminPostClass){
         if (ENABLED) {
             Optional<Post> post = postRepo.findPostByFields(incomeAdminPostClass.getQuestion(), incomeAdminPostClass.getCreationDate(), incomeAdminPostClass.getImageURL());
@@ -124,6 +150,11 @@ public class AdminScriptService {
         }
         return null;
     }
+
+    /**
+     * Adds a specific comment to a post from a user with the provided details. Only works if Enabled is set and the user is valid.
+     * @param incomeAdminCommentClass The details containing the comment to set and the username to set it from
+     */
     public void registerComment(IncomeAdminCommentClass incomeAdminCommentClass){
         if (ENABLED){
             Comment comment = new Comment();
@@ -147,6 +178,10 @@ public class AdminScriptService {
         }
     }
 
+    /**
+     * Adds a specific vote to a post from a user with the provided details. Only work if ENABLED Is true and the user is valid.
+     * @param incomeAdminVoteClass The data containing the vote to set and the username to set it from
+     */
     public void registerVote(IncomeAdminVoteClass incomeAdminVoteClass){
         if (ENABLED){
             CurrentVote currentVote = new CurrentVote();
@@ -162,6 +197,13 @@ public class AdminScriptService {
             }
         }
     }
+
+    /**
+     * Create a random encoded password.
+     * Used to create a default account, with a randomly set password.
+     *
+     * @return String containing a random encoded password
+     */
     private String createPassword(){
         final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 

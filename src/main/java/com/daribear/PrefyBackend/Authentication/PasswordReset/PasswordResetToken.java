@@ -8,6 +8,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Data entity representing the password reset token
+ */
 @Entity
 @Getter
 @Setter

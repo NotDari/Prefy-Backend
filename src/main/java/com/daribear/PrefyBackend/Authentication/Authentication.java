@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.*;
 
+/**
+ * The authentication Data entity which represents a user account.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode

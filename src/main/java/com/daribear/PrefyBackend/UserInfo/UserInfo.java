@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 
+/**
+ * Critical details of a user, which can only be created at account creation.
+ */
 @Data
 @Entity
 @Table

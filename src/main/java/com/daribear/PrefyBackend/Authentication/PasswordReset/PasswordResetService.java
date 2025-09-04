@@ -19,6 +19,10 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * The service which handles the password reset requests.
+ * Generates tokens, sends reset emails and manages token confirmation
+ */
 @Service
 @AllArgsConstructor
 public class PasswordResetService {
@@ -28,8 +32,15 @@ public class PasswordResetService {
     private final PasswordTokenRepository passwordTokenRepository;
     private Environment environment;
 
+    /**
+     * Starts a password request sequence for a user.
+     * Sends an email to the user with the link to the password reset.
+     * @param login The user's email or username
+     * @return "sent" if the email was successfully send
+     */
     public String sendPasswordReset(String login){
         Optional<Authentication> optAuth;
+        //Get user by email or username
         if (login.contains("@")) {
             optAuth = authService.getUserByEmail(login);
         } else {
@@ -43,6 +54,7 @@ public class PasswordResetService {
         if (optAuth.isEmpty()) {
             throw ErrorStorage.getCustomErrorFromType(ErrorStorage.ErrorType.USERNOTFOUND);
         }
+        //Send the password reset email
         Authentication auth = optAuth.get();
         String token = UUID.randomUUID().toString();
         createPasswordResetTokenForUser(auth, token);
@@ -50,15 +62,30 @@ public class PasswordResetService {
         return "sent";
     }
 
+    /**
+     * Creates a password reset token for the user.
+     * @param authentication user authentication object
+     * @param token the generated token to be saved
+     */
     public void createPasswordResetTokenForUser(Authentication authentication, String token) {
         PasswordResetToken myToken = new PasswordResetToken(token, authentication, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15));
         passwordTokenRepository.save(myToken);
     }
 
+    /**
+     * Gets the authentication id from a password reset token
+     * @param token the token to use
+     * @return the user id
+     */
     public Long getAuthIdFromToken(String token){
         return passwordTokenRepository.getIdByToken(token).getId();
     }
 
+    /**
+     * Confirm a password reset token.
+     * @param token token to be confirmed
+     * @return 1 if successful
+     */
     public int setPasswordTokenConfirmed(String token){
         return passwordTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
     }

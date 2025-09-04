@@ -9,10 +9,19 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Represents the repository of follow entities in the database.
+ */
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-
+    /**
+     * Attempts to find the follow between two users.
+     *
+     * @param userId user id which is following
+     * @param followerId the id of the user which is being followed
+     * @return the optional follow if exists.
+     */
     @Query("Select f FROM Follow f WHERE f.userId = :followerId AND f.followerId = :userId")
     Optional<Follow> findIfExists(Long userId, Long followerId);
 

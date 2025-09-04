@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+/**
+ * The spongebot parameters data entity which stores the details required for spongebot to run.
+ */
 @Data
 @Entity
 @Table(name = "Spongebot")

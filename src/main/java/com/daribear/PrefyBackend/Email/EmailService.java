@@ -13,14 +13,24 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * An implementation of the EmailSender interface.
+ * Sends an email to the recipient, with the correct sender with the correct content, throwing an error if one occurs.
+ * Uses JavaMailSender.
+ */
 @Service
 @AllArgsConstructor
 public class EmailService implements EmailSender {
-    private final static Logger logger = LoggerFactory.getLogger(EmailService.class);
-
     private final JavaMailSender mailSender;
 
-
+    /**
+     * Sends the email, to the correct receipient with the correct subject, and with the right content.
+     * Throws an error if one occurs.
+     *
+     * @param to recipient of the email
+     * @param subject subject of the email
+     * @param email content of the email
+     */
     @Override
     @Async
     public void send(String to, String subject, String email) {

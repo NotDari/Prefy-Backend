@@ -7,7 +7,10 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class which contains all the comment details, as well as a list of all the replies to said comment.
+ *
+ */
 @Getter
 @Setter
 public class FullComment {
@@ -21,6 +24,10 @@ public class FullComment {
     private User user;
     private List<Comment> replyList;
 
+    /**
+     * Convert from a comment to a full comment by making a blank reply list
+     * @param comment comment to be converted
+     */
     public void convertComment(Comment comment){
         setId(comment.getId());
         setCreationDate(comment.getCreationDate());

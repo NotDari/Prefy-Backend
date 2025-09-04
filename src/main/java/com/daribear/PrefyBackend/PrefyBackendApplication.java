@@ -19,6 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootApplication
 public class PrefyBackendApplication{
 
+	/**
+	 * Run the main application
+	 * @param args program args
+	 */
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx =SpringApplication.run(PrefyBackendApplication.class, args);
 	}

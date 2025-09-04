@@ -11,21 +11,7 @@ import com.daribear.PrefyBackend.Users.User;
 import com.daribear.PrefyBackend.Users.UserService;
 import com.daribear.PrefyBackend.Utils.IntegrityApi.IntegrityHelper;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
-import com.google.api.client.http.HttpRequestInitializer;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.services.playintegrity.v1.PlayIntegrity;
-import com.google.api.services.playintegrity.v1.PlayIntegrityRequestInitializer;
-import com.google.api.services.playintegrity.v1.model.DecodeIntegrityTokenRequest;
-import com.google.api.services.playintegrity.v1.model.DecodeIntegrityTokenResponse;
-import com.google.api.services.playintegrity.v1.model.DeviceIntegrity;
-import com.google.auth.http.HttpCredentialsAdapter;
-import com.google.auth.oauth2.GoogleCredentials;
 import lombok.AllArgsConstructor;
-import org.apache.http.impl.client.FutureRequestExecutionMetrics;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
@@ -33,13 +19,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
@@ -47,10 +31,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 @AllArgsConstructor
 public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -79,7 +60,7 @@ public class JWTUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 return null;
             }
 
-            (new IntegrityHelper()).getToken(authRequest.getToken());
+            (new IntegrityHelper()).validateToken(authRequest.getToken());
             return authenticate;
         } catch (IOException e) {
             throw new RuntimeException(e);

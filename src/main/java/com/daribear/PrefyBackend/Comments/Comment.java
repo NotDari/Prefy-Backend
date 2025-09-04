@@ -10,7 +10,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
+/**
+ * The entity which represents the comment. This comment could be the original comment or a reply to a comment.
+ */
 @Data
 @Entity
 @Table

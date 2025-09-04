@@ -24,6 +24,9 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
+/**
+ * Custom spring boot configuration class that allows use of https with a self signed sertificate
+ */
 @Configuration
 public class SSlConfiguration {
     @Value("${trust.store}")
@@ -32,6 +35,16 @@ public class SSlConfiguration {
     @Value("${trust.store.password}")
     private String trustStorePassword;
 
+    /**
+     * Configures a rest template that uses a custom SSL context
+     * @return resttemplate enforced with custom http that enforces ssl.
+     * @throws KeyManagementException if there is an issue with the ssl
+     * @throws NoSuchAlgorithmException if there is an issye with the ssl algorithk
+     * @throws KeyStoreException if there is an issue loading the trust store
+     * @throws CertificateException if there is an issue parsing the certificate
+     * @throws MalformedURLException if the url of the trust store is invalid
+     * @throws IOException if there is an io exception reading the trust store
+     */
     @Bean
     public RestTemplate restTemplate() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException,
             CertificateException, MalformedURLException, IOException {

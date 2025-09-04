@@ -9,11 +9,21 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+/**
+ * Repository for the handling of the JWT token entity.
+ */
 @Repository
 public interface JWTRepository  extends JpaRepository<JWTClass, Long> {
     Optional<JWTClass> findByToken(String token);
 
-
+    /**
+     * Invalidates a token by setting the current date as the ban date.
+     * Meaning the user is essentially logged out.
+     *
+     * @param token token to alter
+     * @param currentTime time to set the ban date at
+     * @return successful or not
+     */
     @Transactional
     @Modifying
     @Query("UPDATE JWTClass j " +

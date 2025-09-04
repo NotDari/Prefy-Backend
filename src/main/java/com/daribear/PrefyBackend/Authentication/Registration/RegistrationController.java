@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
 
+/**
+ * The controller which handles the registration endpoints.
+ */
 @Controller
 @RequestMapping(path = "prefy/v1/Registration")
 @AllArgsConstructor
@@ -14,6 +17,11 @@ public class RegistrationController {
 
     private RegistrationService registrationService;
 
+    /**
+     * Registers a new user to the database
+     * @param request
+     * @return
+     */
     @PostMapping
     @ResponseBody
     public String register(@RequestBody RegistrationRequest request){

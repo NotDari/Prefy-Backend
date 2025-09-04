@@ -20,6 +20,9 @@ import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The service related to the admin functions.
+ */
 @Service
 @Component
 public class AdminService {
@@ -27,6 +30,10 @@ public class AdminService {
     private PostRepository postRepo;
 
 
+    /**
+     * Replaces the current post with a set id with a new one with the exact same id.
+     * @param post the post to replace the current post with the same id
+     */
     public void updatePost(Post post){
         postRepo.save(post);
     }

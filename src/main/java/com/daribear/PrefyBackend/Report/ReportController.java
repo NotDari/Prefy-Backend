@@ -25,6 +25,10 @@ import java.util.List;
 import java.util.Optional;
 
 
+/**
+ * This is the controller which handles the users submission of reports and the admins retrieval of reports.
+ * It acts through the reportService to perform these actions.
+ */
 @RestController
 @RequestMapping(path = "prefy/v1/Reports")
 public class ReportController {
@@ -39,16 +43,25 @@ public class ReportController {
     @Autowired
     private AuthenticationService authService;
 
+    /**
+     * When the user submits a report. Saves it as an active report in the database.
+     * @param report report to be submitted to the database.
+     */
     @PostMapping("/SubmitReport")
     public void createReport(@RequestBody Report report){
         report.setActive(true);
         reportService.saveReport(report);
     }
 
-
+    /**
+     * This is an admin only function. It retrieves a list of reports with the pages set in the income
+     *
+     * @param defaultIncomePageable this determines the page of the available reports retrieved
+     * @return the list of reports, if its successful
+     */
     @GetMapping("/GetReport")
     @PreAuthorize("hasRole('ROLE_Admin')")
-    public ArrayList<Report> getReport(DefaultIncomePageable defaultIncomePageable) throws UnknownHostException {
+    public ArrayList<Report> getReport(DefaultIncomePageable defaultIncomePageable) {
         return reportService.getReports(defaultIncomePageable);
     }
 

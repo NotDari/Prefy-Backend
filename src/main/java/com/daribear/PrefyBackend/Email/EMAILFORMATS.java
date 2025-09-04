@@ -1,7 +1,19 @@
 package com.daribear.PrefyBackend.Email;
 
+/**
+ * Class containing the list of email formats that can be used.
+ * Email formats are returned in a string of the static function.
+ */
 public class EMAILFORMATS {
 
+    /**
+     * The html code for the email to be sent to a user when they have to confirm their new account.
+     * Sends a link, so that they can confirm their email.
+     *
+     * @param name name to be sent in the email
+     * @param link link provided for confirming registration
+     * @return String containing the correct html format
+     */
     public static String RegistrationConfirmation(String name, String link){
         return "<html lang=\"en\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">\n" +
                 "<head>\n" +
@@ -226,6 +238,14 @@ public class EMAILFORMATS {
                 "</html>";
     }
 
+    /**
+     * The html code for the email to be sent to a user when they request a password reset.
+     * Sends a link which takes the user to a web page where they can reset their password.
+     *
+     * @param name name to be sent in the email
+     * @param link link provided for resetting the password.
+     * @return String containing the correct html format
+     */
     public static String PasswordReset(String name, String link){
         return "<html lang=\"en\" xmlns:o=\"urn:schemas-microsoft-com:office:office\" xmlns:v=\"urn:schemas-microsoft-com:vml\">\n" +
                 "<head>\n" +

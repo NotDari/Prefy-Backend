@@ -7,6 +7,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Springboot configuration properties for JWT settings.
+ */
 @ConfigurationProperties(prefix = "application.jwt")
 @Configuration
 @NoArgsConstructor

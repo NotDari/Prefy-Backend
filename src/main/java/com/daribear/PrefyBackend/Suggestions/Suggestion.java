@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Entity representing a suggestion submitted by a user to improve the services.
+ */
 @Data
 @Entity
 @Table

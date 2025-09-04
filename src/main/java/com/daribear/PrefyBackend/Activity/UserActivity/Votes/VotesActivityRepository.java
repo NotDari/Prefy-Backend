@@ -11,13 +11,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-
+/**
+ * The repository which handles the retrieval/submission/updating of VotesActivities.
+ */
 @Repository
 public interface VotesActivityRepository extends JpaRepository<VotesActivity, Long> {
 
 
-
-
+    /**
+     *
+     * @param id
+     * @return
+     */
     Optional<VotesActivity> findById(Long id);
 
     @Query("Select v FROM VotesActivity v WHERE v.userId = ?1")
@@ -25,11 +30,6 @@ public interface VotesActivityRepository extends JpaRepository<VotesActivity, Lo
 
     boolean existsVotesActivityByPostId(Long postId);
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Authentication a " +
-            "SET a.enabled = TRUE WHERE a.email = ?1")
-    int enableAuthentication(String email);
 
     @Transactional
     @Modifying

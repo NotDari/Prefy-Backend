@@ -11,6 +11,9 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The entity representing a user's post.
+ */
 @Data
 @Entity
 @Table

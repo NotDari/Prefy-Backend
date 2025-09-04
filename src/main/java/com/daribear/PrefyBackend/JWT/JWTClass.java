@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/**
+ * Jwt Entity that represents a JWT token.
+ */
 @Data
 @Entity
 @Table(name = "JWToken",uniqueConstraints=

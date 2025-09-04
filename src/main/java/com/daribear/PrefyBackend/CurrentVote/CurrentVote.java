@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * Data entity representing a CurrentVote, which is a user's votes on a post.
+ */
 @Data
 @Entity
 @Table(name = "CurrentVotes")

@@ -2,6 +2,10 @@ package com.daribear.PrefyBackend.Errors;
 
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * The class which contains an enum of all the available custom errors.
+ * ALso provides a helper method to convert an ErrorType enum into a CustomError object.
+ */
 public class ErrorStorage {
 
     public enum ErrorType{
@@ -38,6 +42,11 @@ public class ErrorStorage {
         }
     }
 
+    /**
+     *
+     * @param errorType Type of error
+     * @return an errorType converted into the CustomError.
+     */
     public static CustomError getCustomErrorFromType(ErrorType errorType){
         return new CustomError(errorType.responseCode, errorType.message, errorType.errorCode);
     }

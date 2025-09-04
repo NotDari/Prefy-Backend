@@ -7,6 +7,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
+
+/**
+ * Entity for dictating a user's CommentsActivity,
+ * which is used for displaying to the user, recent activity on their post.
+ * Each commentActivity
+ */
 @Getter
 @Setter
 @NoArgsConstructor

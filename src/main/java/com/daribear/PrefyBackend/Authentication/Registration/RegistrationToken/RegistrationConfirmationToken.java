@@ -10,7 +10,9 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-
+/**
+ * data entity representing the registrationconfirmationToken.
+ */
 @Getter
 @Setter
 @NoArgsConstructor
